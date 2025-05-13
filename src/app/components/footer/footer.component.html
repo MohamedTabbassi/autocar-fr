@@ -1,0 +1,68 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <div class="footer-logo">
+          AUTO<span class="highlight">PART</span>
+        </div>
+        <p class="footer-description">
+          Votre partenaire automobile complet pour tous vos besoins en mécanique, pièces détachées, et location de véhicules.
+        </p>
+        <div class="social-links">
+          <a href="#" class="social-link" aria-label="Facebook">
+            <span class="icon">📱</span>
+          </a>
+          <a href="#" class="social-link" aria-label="Twitter">
+            <span class="icon">📱</span>
+          </a>
+          <a href="#" class="social-link" aria-label="Instagram">
+            <span class="icon">📱</span>
+          </a>
+          <a href="#" class="social-link" aria-label="Youtube">
+            <span class="icon">📱</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <h3 class="footer-heading">Nos Services</h3>
+        <ul class="footer-links">
+          <li *ngFor="let service of services">
+            <a [routerLink]="service.route">{{ service.name }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h3 class="footer-heading">Liens Utiles</h3>
+        <ul class="footer-links">
+          <li *ngFor="let link of usefulLinks">
+            <a [routerLink]="link.route">{{ link.name }}</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h3 class="footer-heading">Contact</h3>
+        <ul class="contact-info">
+          <li class="contact-item">
+            <span class="icon">📍</span>
+            <span>Route ceinture Megrine Jawhra, Ben Arous, Tunisie</span>
+          </li>
+          <li class="contact-item">
+            <span class="icon">📞</span>
+            <span>+216 23 136 136</span>
+          </li>
+          <li class="contact-item">
+            <span class="icon">✉️</span>
+            <span>autoservice.tunisia&#64;gmail.com</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; {{ currentYear }} AUTOPART. Tous droits réservés.</p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,24 @@
+<div class="part-card" [id]="'part-' + part.id">
+  <div class="part-image">
+    <img [src]="part.imageUrl || 'assets/images/part-placeholder.jpg'" [alt]="part.name">
+  </div>
+  <div class="part-details">
+    <h3 class="part-title">{{part.name}}</h3>
+    <p class="part-reference">Réf: {{part.reference}}</p>
+    
+    <p class="part-description">{{part.description}}</p>
+    <p class="part-compatibility">Compatibilité: {{part.compatibility}}</p>
+    
+    <div class="part-info">
+      <div class="part-price">{{part.price.toFixed(2)}} €</div>
+      <div class="part-stock" [class.in-stock]="part.inStock" [class.out-of-stock]="!part.inStock">
+        {{part.inStock ? 'En stock' : 'Rupture de stock'}}
+      </div>
+    </div>
+  </div>
+  <div class="part-actions">
+    <button class="btn btn-primary btn-full" [disabled]="!part.inStock" (click)="onAddToCart()">
+      Ajouter au panier
+    </button>
+  </div>
+</div>

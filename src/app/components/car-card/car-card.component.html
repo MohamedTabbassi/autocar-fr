@@ -1,0 +1,59 @@
+<p>car-card works!</p>
+<div class="car-card" [class.new]="car.isNew">
+  <div *ngIf="car.isNew" class="new-badge">NEW</div>
+  <div class="car-image">
+    <img [src]="car.imageUrl || 'assets/images/car-placeholder.jpg'" [alt]="car.name">
+  </div>
+  <div class="car-details">
+    <h3 class="car-title">{{car.name}}</h3>
+    <p class="car-category">Classe {{car.class}}</p>
+    
+    <div class="car-features">
+      <div class="feature">
+        <span class="icon">👤</span> {{car.seats}}
+      </div>
+      <div class="feature">
+        <span class="icon">🚗</span> {{car.transmission}}
+      </div>
+      <div class="feature">
+        <span class="icon">🧳</span> {{car.luggage || 3}}
+      </div>
+      <div class="feature">
+        <span class="icon">❄️</span> {{car.hasAC ? 'OUI' : 'NON'}}
+      </div>
+    </div>
+    
+    <div class="car-includes">
+      <p class="includes-title">Prix comprend:</p>
+      <ul class="includes-list">
+        <li>Kilométrage illimité</li>
+        <li>Assurance au tiers</li>
+        <li>Surcharge Aéroport/Gare</li>
+        <li>Caution : 600 €</li>
+      </ul>
+    </div>
+    
+    <div class="car-price">
+      <div *ngIf="car.startDate && car.endDate" class="price-period">
+        Total pour {{calculateDays(car.startDate, car.endDate)}} jours
+      </div>
+      <div class="price-amount">
+        <span *ngIf="car.startDate && car.endDate">
+          {{calculateTotalPrice(car.pricePerDay, car.startDate, car.endDate)}}
+        </span>
+        <span *ngIf="!car.startDate || !car.endDate">
+          {{car.pricePerDay}}
+        </span>
+        €
+      </div>
+      <div class="price-per-day">
+        {{car.pricePerDay}} € <span class="per-day">/jour</span>
+      </div>
+    </div>
+  </div>
+  <div class="car-actions">
+    <button class="btn btn-primary btn-full" (click)="onBookClick()">
+      DEVIS ET RÉSERVATION
+    </button>
+  </div>
+</div>

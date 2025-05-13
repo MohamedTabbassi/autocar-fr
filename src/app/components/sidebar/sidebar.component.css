@@ -1,0 +1,277 @@
+/* Sidebar Container */
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  height: 100vh;
+  background-color: #ffffff;
+  color: #333333;
+  border-right: 1px solid #e0e0e0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-container.collapsed {
+  width: 60px;
+  overflow: hidden;
+}
+
+.sidebar-container.mobile {
+  transform: translateX(-100%);
+  width: 280px;
+}
+
+.sidebar-container.mobile-open {
+  transform: translateX(0);
+}
+
+/* Header */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid #e0e0e0;
+  height: 64px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-text {
+  font-size: 18px;
+  font-weight: bold;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+}
+
+.logo-highlight {
+  color: #ff6b00;
+}
+
+.logo-icon {
+  display: none;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #ff6b00;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+}
+
+.logo-icon.visible {
+  display: flex;
+}
+
+.toggle-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #555;
+  padding: 5px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-button:hover {
+  color: #ff6b00;
+}
+
+/* Content */
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-top: 8px;
+}
+
+.nav-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  margin-bottom: 2px;
+}
+
+.nav-link,
+.dropdown-header {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: #555;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover,
+.dropdown-header:hover {
+  background-color: #f5f5f5;
+  color: #ff6b00;
+}
+
+.nav-link.active {
+  background-color: #ff6b001a;
+  color: #ff6b00;
+  border-left: 3px solid #ff6b00;
+}
+
+.nav-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-text {
+  white-space: nowrap;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.nav-text.hidden,
+.dropdown-arrow.hidden {
+  opacity: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+/* Dropdown styles */
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown-arrow {
+  margin-left: auto;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-arrow.expanded {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.dropdown-menu.expanded {
+  max-height: 500px;
+}
+
+.dropdown-menu.hidden {
+  display: none;
+}
+
+.dropdown-item {
+  padding-left: 54px;
+}
+
+.dropdown-link {
+  display: flex;
+  padding: 10px 0;
+  text-decoration: none;
+  color: #555;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.dropdown-link:hover {
+  color: #ff6b00;
+}
+
+.dropdown-link.active {
+  color: #ff6b00;
+  font-weight: 500;
+}
+
+/* Footer */
+.sidebar-footer {
+  padding: 16px;
+  border-top: 1px solid #e0e0e0;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-footer.hidden {
+  opacity: 0;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.contact-info {
+  font-size: 12px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.contact-item i {
+  margin-right: 8px;
+  color: #ff6b00;
+}
+
+/* Overlay for mobile view */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+}
+
+.sidebar-overlay.visible {
+  display: block;
+}
+
+/* Icons */
+/* These are placeholders for the icons. In a real app, you would use an icon library like Font Awesome */
+.icon-home:before {
+  content: "🏠";
+}
+.icon-car:before {
+  content: "🚗";
+}
+.icon-tools:before {
+  content: "🔧";
+}
+.icon-cog:before {
+  content: "⚙️";
+}
+.icon-truck:before {
+  content: "🚚";
+}
+.icon-envelope:before {
+  content: "✉️";
+}
+.icon-phone:before {
+  content: "📞";
+}

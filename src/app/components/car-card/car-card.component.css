@@ -1,0 +1,152 @@
+.car-card {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.car-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.new-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff6b00;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.car-image {
+  height: 180px;
+  overflow: hidden;
+}
+
+.car-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.car-details {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.car-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.car-category {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.car-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+
+.icon {
+  margin-right: 5px;
+}
+
+.car-includes {
+  margin-bottom: 15px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.includes-title {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.includes-list {
+  list-style: disc;
+  padding-left: 20px;
+  font-size: 13px;
+  color: #666;
+}
+
+.includes-list li {
+  margin-bottom: 3px;
+}
+
+.car-price {
+  margin-top: auto;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.price-period {
+  font-size: 14px;
+  color: #666;
+}
+
+.price-amount {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ff6b00;
+}
+
+.price-per-day {
+  font-size: 14px;
+}
+
+.per-day {
+  color: #666;
+}
+
+.car-actions {
+  padding: 0 20px 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-weight: 500;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #ff6b00;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #e05f00;
+}
+
+.btn-full {
+  width: 100%;
+}

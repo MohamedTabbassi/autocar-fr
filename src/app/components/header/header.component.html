@@ -1,0 +1,85 @@
+<header class="header">
+  <div class="container">
+    <div class="header-content">
+      <div class="logo">
+        <a routerLink="/">
+          AUTO<span class="highlight">PART</span>
+        </a>
+      </div>
+
+      <nav class="desktop-nav">
+        <ul class="nav-list">
+          <li class="nav-item"><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a></li>
+          <li class="nav-item"><a routerLink="/car-rental" routerLinkActive="active">Location</a></li>
+          <li class="nav-item"><a routerLink="/mechanic-service" routerLinkActive="active">Mécanique</a></li>
+          <li class="nav-item"><a routerLink="/mobile-mechanic" routerLinkActive="active">Atelier Mobile</a></li>
+          <li class="nav-item"><a routerLink="/auto-parts" routerLinkActive="active">Pièces Auto</a></li>
+          <li class="nav-item"><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a routerLink="/shopping-cart" class="cart-icon">
+          <span class="icon">🛒</span>
+          <span *ngIf="cartItemCount > 0" class="cart-badge">{{cartItemCount}}</span>
+        </a>
+        
+        <div *ngIf="isLoggedIn" class="user-menu">
+          <a routerLink="/user-profile" class="user-icon">
+            <span class="icon">👤</span>
+          </a>
+        </div>
+        
+        <div *ngIf="!isLoggedIn" class="auth-buttons">
+          <a routerLink="/login" class="btn btn-outline">Connexion</a>
+          <a routerLink="/register" class="btn btn-primary">Inscription</a>
+        </div>
+
+        <button class="menu-toggle" (click)="toggleMenu()">
+          <span class="icon">☰</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav" [class.open]="isMenuOpen">
+    <div class="mobile-nav-header">
+      <div class="logo">
+        AUTO<span class="highlight">PART</span>
+      </div>
+      <button class="close-menu" (click)="toggleMenu()">✕</button>
+    </div>
+    
+    <ul class="mobile-nav-list">
+      <li class="mobile-nav-item"><a routerLink="/" (click)="toggleMenu()">Accueil</a></li>
+      <li class="mobile-nav-item"><a routerLink="/car-rental" (click)="toggleMenu()">Location</a></li>
+      <li class="mobile-nav-item"><a routerLink="/mechanic-service" (click)="toggleMenu()">Mécanique</a></li>
+      <li class="mobile-nav-item"><a routerLink="/mobile-mechanic" (click)="toggleMenu()">Atelier Mobile</a></li>
+      <li class="mobile-nav-item"><a routerLink="/auto-parts" (click)="toggleMenu()">Pièces Auto</a></li>
+      <li class="mobile-nav-item"><a routerLink="/contact" (click)="toggleMenu()">Contact</a></li>
+      
+      <li *ngIf="!isLoggedIn" class="mobile-nav-item auth-item">
+        <a routerLink="/login" (click)="toggleMenu()">Connexion</a>
+      </li>
+      <li *ngIf="!isLoggedIn" class="mobile-nav-item auth-item">
+        <a routerLink="/register" (click)="toggleMenu()">Inscription</a>
+      </li>
+      <li *ngIf="isLoggedIn" class="mobile-nav-item auth-item">
+        <a routerLink="/user-profile" (click)="toggleMenu()">Mon Profil</a>
+      </li>
+      <li *ngIf="isLoggedIn" class="mobile-nav-item auth-item">
+        <a (click)="logout(); toggleMenu()">Déconnexion</a>
+      </li>
+    </ul>
+
+    <div class="mobile-nav-footer">
+      <div class="contact-info">
+        <p><span class="icon">📞</span> +216 23 136 136</p>
+        <p><span class="icon">✉️</span> autoservice.tunisia&#64;gmail.com</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" [class.active]="isMenuOpen" (click)="toggleMenu()"></div>
+</header>
