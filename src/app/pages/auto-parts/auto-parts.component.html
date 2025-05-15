@@ -1,1 +1,296 @@
-<p>auto-parts works!</p>
+<div class="auto-parts-page">
+  <div class="container">
+    <!-- Header with logo and search -->
+    <div class="page-header">
+      <div class="header-left">
+        <h1 class="page-title">
+          AUTO<span class="highlight">PART</span>
+        </h1>
+      </div>
+      <div class="search-bar">
+        <input 
+          type="text" 
+          [(ngModel)]="searchQuery" 
+          placeholder="Recherche par référence" 
+          class="search-input"
+        >
+        <button (click)="searchParts()" class="search-button">
+          <span class="icon">🔍</span> RECHERCHER
+        </button>
+      </div>
+      <div class="cart-button">
+        <button class="btn btn-outline">
+          <span class="icon">🛒</span>
+          <span *ngIf="cartCount > 0" class="cart-badge">{{cartCount}}</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Hero banner with vehicle selector -->
+    <div class="hero-banner">
+      <div class="hero-content">
+        <div class="vehicle-selector">
+          <h2 class="selector-title">SÉLECTIONNEZ VOTRE VÉHICULE</h2>
+          <div class="selector-form">
+            <div class="form-group">
+              <label for="manufacturer">Constructeurs</label>
+              <select id="manufacturer" [(ngModel)]="selectedManufacturer">
+                <option value="">Constructeurs</option>
+                <option *ngFor="let manufacturer of manufacturers" [value]="manufacturer.id">
+                  {{manufacturer.name}}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="model">Modèles</label>
+              <select id="model" [(ngModel)]="selectedModel" [disabled]="!selectedManufacturer">
+                <option value="">Modèles</option>
+                <option *ngFor="let model of getFilteredModels()" [value]="model.id">
+                  {{model.name}}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="engine">Motorisations</label>
+              <select id="engine" [(ngModel)]="selectedEngine" [disabled]="!selectedModel">
+                <option value="">Motorisations</option>
+                <option *ngFor="let engine of getFilteredEngines()" [value]="engine.id">
+                  {{engine.name}}
+                </option>
+              </select>
+            </div>
+
+            <button (click)="searchByVehicle()" class="btn btn-primary btn-full">
+              RECHERCHER
+            </button>
+          </div>
+        </div>
+        <div class="hero-text">
+          <h1 class="hero-title">
+            Vos pièces auto sur <span class="highlight">Autopart.tn</span>
+          </h1>
+          <p class="hero-subtitle">Trouvez toutes les pièces pour votre véhicule</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading and Error States -->
+    <div *ngIf="loading" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Chargement des pièces...</p>
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      <strong>Erreur!</strong> {{error}}
+    </div>
+
+    <div class="main-content" *ngIf="!loading && !error">
+      <!-- Sidebar with Categories -->
+      <div class="sidebar">
+        <div class="sidebar-content">
+          <h2 class="sidebar-title">Catégories</h2>
+          <div class="categories-list">
+            <div *ngFor="let category of partCategories" class="category-item">
+              <button 
+                (click)="toggleCategory(category.id)" 
+                class="category-button"
+                [class.active]="selectedCategory === category.id"
+              >
+                <span>{{category.name}}</span>
+                <span class="toggle-icon">
+                  {{expandedCategory === category.id ? '▲' : '▼'}}
+                </span>
+              </button>
+              <div *ngIf="expandedCategory === category.id" class="subcategory-list">
+                <ng-container *ngFor="let part of filteredParts">
+                  <div class="subcategory-item" *ngIf="part.category === category.id">
+                    <a [routerLink]="['/auto-parts', category.id]" [fragment]="'part-' + part.id">
+                      {{part.name}}
+                    </a>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="content">
+        <!-- Parts List -->
+        <div class="parts-header">
+          <h2 class="content-title">{{getCategoryName()}}</h2>
+          <div class="parts-actions">
+            <div class="view-toggle">
+              <button 
+                class="view-button" 
+                [class.active]="viewMode === 'grid'" 
+                (click)="setViewMode('grid')"
+              >
+                <span class="icon">▦</span> Grille
+              </button>
+              <button 
+                class="view-button" 
+                [class.active]="viewMode === 'list'" 
+                (click)="setViewMode('list')"
+              >
+                <span class="icon">☰</span> Liste
+              </button>
+            </div>
+            <div class="filter-actions">
+              <button class="btn btn-outline btn-sm">
+                <span class="icon">🔍</span> Filtrer
+              </button>
+              <button *ngIf="selectedCategory" class="btn btn-outline btn-sm" (click)="resetCategory()">
+                Voir toutes les pièces
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="parts-count">
+          {{filteredParts.length}} produit{{filteredParts.length > 1 ? 's' : ''}} trouvé{{filteredParts.length > 1 ? 's' : ''}}
+        </div>
+
+        <!-- Grid View -->
+        <div *ngIf="viewMode === 'grid'" class="parts-grid">
+          <div *ngFor="let part of filteredParts" class="part-card" [id]="'part-' + part.id">
+            <div class="part-image">
+              <img [src]="part.imageUrl || 'assets/images/part-placeholder.jpg'" [alt]="part.name">
+            </div>
+            <div class="part-content">
+              <h3 class="part-title">{{part.name}}</h3>
+              <p class="part-reference">Réf: {{part.reference}}</p>
+              <p class="part-description">{{part.description}}</p>
+              <p class="part-compatibility">Compatibilité: {{part.compatibility}}</p>
+              <div class="part-footer">
+                <div class="part-price">{{part.price.toFixed(2)}} €</div>
+                <div class="part-stock" [class.in-stock]="part.inStock" [class.out-of-stock]="!part.inStock">
+                  {{part.inStock ? 'En stock' : 'Rupture de stock'}}
+                </div>
+              </div>
+              <button 
+                class="btn btn-primary btn-full" 
+                [disabled]="!part.inStock" 
+                (click)="addToCart(part)"
+              >
+                Ajouter au panier
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- List View -->
+        <div *ngIf="viewMode === 'list'" class="parts-list">
+          <div *ngFor="let part of filteredParts" class="part-list-item" [id]="'part-' + part.id">
+            <div class="part-list-image">
+              <img [src]="part.imageUrl || 'assets/images/part-placeholder.jpg'" [alt]="part.name">
+            </div>
+            <div class="part-list-details">
+              <h3 class="part-title">{{part.name}}</h3>
+              <p class="part-reference">Réf: {{part.reference}}</p>
+              <p class="part-description">{{part.description}}</p>
+              <p class="part-compatibility">Compatibilité: {{part.compatibility}}</p>
+              <p class="part-manufacturer">Fabricant: {{part.manufacturer}}</p>
+            </div>
+            <div class="part-list-actions">
+              <div class="part-price">{{part.price.toFixed(2)}} €</div>
+              <div class="part-stock" [class.in-stock]="part.inStock" [class.out-of-stock]="!part.inStock">
+                {{part.inStock ? 'En stock' : 'Rupture de stock'}}
+              </div>
+              <button 
+                class="btn btn-primary" 
+                [disabled]="!part.inStock" 
+                (click)="addToCart(part)"
+              >
+                Ajouter au panier
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <button class="pagination-button" disabled>
+            &laquo; Précédent
+          </button>
+          <div class="pagination-pages">
+            <button class="pagination-page active">1</button>
+            <button class="pagination-page">2</button>
+            <button class="pagination-page">3</button>
+          </div>
+          <button class="pagination-button">
+            Suivant &raquo;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related Categories -->
+    <div class="related-categories">
+      <h2 class="section-title">Catégories populaires</h2>
+      <div class="category-cards">
+        <div *ngFor="let category of partCategories.slice(0, 6)" class="category-card">
+          <div class="category-icon">
+            <img [src]="category.icon || 'assets/images/category-placeholder.png'" [alt]="category.name">
+          </div>
+          <h3 class="category-name">{{category.name}}</h3>
+          <a [routerLink]="['/auto-parts']" [queryParams]="{category: category.id}" class="category-link">
+            Voir les produits
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brands Section -->
+    <div class="brands-section">
+      <h2 class="section-title">Nos marques partenaires</h2>
+      <div class="brands-slider">
+        <div class="brand-logo">
+          <img src="assets/images/brands/bosch.png" alt="Bosch">
+        </div>
+        <div class="brand-logo">
+          <img src="assets/images/brands/valeo.png" alt="Valeo">
+        </div>
+        <div class="brand-logo">
+          <img src="assets/images/brands/mann-filter.png" alt="Mann Filter">
+        </div>
+        <div class="brand-logo">
+          <img src="assets/images/brands/brembo.png" alt="Brembo">
+        </div>
+        <div class="brand-logo">
+          <img src="assets/images/brands/ferodo.png" alt="Ferodo">
+        </div>
+        <div class="brand-logo">
+          <img src="assets/images/brands/mahle.png" alt="Mahle">
+        </div>
+      </div>
+    </div>
+
+    <!-- Customer Support -->
+    <div class="customer-support">
+      <div class="support-item">
+        <div class="support-icon">🚚</div>
+        <h3 class="support-title">Livraison rapide</h3>
+        <p class="support-text">Livraison en 24-48h sur toute la Tunisie</p>
+      </div>
+      <div class="support-item">
+        <div class="support-icon">🔄</div>
+        <h3 class="support-title">Retours gratuits</h3>
+        <p class="support-text">14 jours pour changer d'avis</p>
+      </div>
+      <div class="support-item">
+        <div class="support-icon">🔒</div>
+        <h3 class="support-title">Paiement sécurisé</h3>
+        <p class="support-text">Paiement à la livraison ou en ligne</p>
+      </div>
+      <div class="support-item">
+        <div class="support-icon">📞</div>
+        <h3 class="support-title">Service client</h3>
+        <p class="support-text">Disponible 7j/7 de 8h à 20h</p>
+      </div>
+    </div>
+  </div>
+</div>

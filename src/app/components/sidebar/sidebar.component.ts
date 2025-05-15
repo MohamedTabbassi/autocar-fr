@@ -89,9 +89,14 @@ export class SidebarComponent {
     }
   }
 
-  toggleExpandItem(name: string): void {
-    this.expandedItems[name] = !this.expandedItems[name]
+ toggleExpandItem(itemName: string): void {
+  if (this.isCollapsed && !this.isMobile) return; // prevent expansion when collapsed on desktop
+  if (this.expandedItems[itemName]) {
+    delete this.expandedItems[itemName];
+  } else {
+    this.expandedItems[itemName] = true;
   }
+}
 
   isExpanded(name: string): boolean {
     return this.expandedItems[name] || false

@@ -1,0 +1,136 @@
+<div class="admin-layout" [class.sidebar-collapsed]="isSidebarCollapsed">
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-header">
+      <img src="assets/images/logo.png" alt="Company Logo" class="sidebar-logo">
+      <button class="sidebar-toggle" (click)="toggleSidebar()">
+        <i class="fas" [class.fa-chevron-left]="!isSidebarCollapsed" [class.fa-chevron-right]="isSidebarCollapsed"></i>
+      </button>
+    </div>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">
+        <img src="assets/images/avatar-placeholder.jpg" alt="User Avatar">
+      </div>
+      <div class="user-info" *ngIf="!isSidebarCollapsed">
+        <h4>{{ currentUser?.firstName }} {{ currentUser?.lastName }}</h4>
+        <span class="user-role">{{ currentUser?.role | titlecase }}</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul>
+        <li>
+          <a routerLink="/admin/dashboard" routerLinkActive="active">
+            <i class="fas fa-tachometer-alt"></i>
+            <span *ngIf="!isSidebarCollapsed">Dashboard</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/admin/users" routerLinkActive="active">
+            <i class="fas fa-users"></i>
+            <span *ngIf="!isSidebarCollapsed">Users</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/admin/inventory" routerLinkActive="active">
+            <i class="fas fa-boxes"></i>
+            <span *ngIf="!isSidebarCollapsed">Inventory</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/admin/orders" routerLinkActive="active">
+            <i class="fas fa-shopping-cart"></i>
+            <span *ngIf="!isSidebarCollapsed">Orders</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/admin/bookings" routerLinkActive="active">
+            <i class="fas fa-calendar-alt"></i>
+            <span *ngIf="!isSidebarCollapsed">Bookings</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/admin/vehicles" routerLinkActive="active">
+            <i class="fas fa-car"></i>
+            <span *ngIf="!isSidebarCollapsed">Vehicles</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/admin/mechanics" routerLinkActive="active">
+            <i class="fas fa-wrench"></i>
+            <span *ngIf="!isSidebarCollapsed">Mechanics</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/admin/reports" routerLinkActive="active">
+            <i class="fas fa-chart-bar"></i>
+            <span *ngIf="!isSidebarCollapsed">Reports</span>
+          </a>
+        </li>
+        <li>
+          <a routerLink="/admin/settings" routerLinkActive="active">
+            <i class="fas fa-cog"></i>
+            <span *ngIf="!isSidebarCollapsed">Settings</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-button" (click)="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        <span *ngIf="!isSidebarCollapsed">Logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-main">
+    <!-- Header -->
+    <header class="admin-header">
+      <div class="header-left">
+        <button class="mobile-sidebar-toggle" *ngIf="isMobile" (click)="toggleSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <h1 class="page-title">Admin Dashboard</h1>
+      </div>
+      <div class="header-right">
+        <div class="header-search">
+          <input type="text" placeholder="Search...">
+          <button><i class="fas fa-search"></i></button>
+        </div>
+        <div class="header-actions">
+          <button class="header-action-button">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">3</span>
+          </button>
+          <button class="header-action-button">
+            <i class="fas fa-envelope"></i>
+            <span class="notification-badge">5</span>
+          </button>
+          <div class="user-dropdown">
+            <button class="user-dropdown-toggle">
+              <img src="assets/images/avatar-placeholder.jpg" alt="User Avatar">
+              <span>{{ currentUser?.firstName }}</span>
+              <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="user-dropdown-menu">
+              <a href="/admin/profile"><i class="fas fa-user"></i> Profile</a>
+              <a href="/admin/settings"><i class="fas fa-cog"></i> Settings</a>
+              <a href="#" (click)="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="admin-content">
+      *
+    </div>
+  </main>
+</div>
+
+<!-- Mobile Sidebar Overlay -->
+<div class="sidebar-overlay" *ngIf="!isSidebarCollapsed && isMobile" (click)="toggleSidebar()"></div>

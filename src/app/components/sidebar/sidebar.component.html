@@ -50,10 +50,15 @@
       </div>
       <div class="contact-item">
         <i class="icon-envelope"></i>
-        <span>autoservice.tunisia&#64;gmail.com</span>
+        <span>autoservice.tunisia.com</span>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Fixed toggle button that's always visible when sidebar is collapsed -->
+<button *ngIf="isCollapsed && !isMobile" class="fixed-toggle-button" (click)="toggleSidebar()">
+  <span class="icon">&#9776;</span>
+</button>
 
 <div class="sidebar-overlay" [class.visible]="isMobile && isMobileOpen" (click)="toggleSidebar()"></div>

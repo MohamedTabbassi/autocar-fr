@@ -1,14 +1,15 @@
+```html
 <div class="car-rental-page">
   <!-- Vehicle Search Form -->
   <section class="search-section">
     <div class="container">
       <div class="search-form-container">
         <h2 class="section-title text-center">Trouvez votre véhicule idéal</h2>
-        <form class="search-form" (ngSubmit)="searchVehicles()">
+        <form class="search-form" (ngSubmit)="searchVehicles()" #searchForm="ngForm">
           <div class="form-grid">
             <div class="form-group">
               <label for="location">Agence de prise en charge</label>
-              <select id="location" name="location" [(ngModel)]="searchParams.location">
+              <select id="location" name="location" [(ngModel)]="searchParams.location" required>
                 <option value="">Sélectionnez un lieu</option>
                 <option *ngFor="let location of locations" [value]="location.id">{{location.name}}</option>
               </select>
@@ -16,7 +17,7 @@
 
             <div class="form-group">
               <label for="startDate">Date de retrait</label>
-              <input type="date" id="startDate" name="startDate" [(ngModel)]="searchParams.startDate">
+              <input type="date" id="startDate" name="startDate" [(ngModel)]="searchParams.startDate" required>
             </div>
 
             <div class="form-group">
@@ -36,7 +37,7 @@
 
             <div class="form-group">
               <label for="endDate">Date de retour</label>
-              <input type="date" id="endDate" name="endDate" [(ngModel)]="searchParams.endDate">
+              <input type="date" id="endDate" name="endDate" [(ngModel)]="searchParams.endDate" required>
             </div>
 
             <div class="form-group">
@@ -55,7 +56,7 @@
             </div>
 
             <div class="form-group">
-              <button type="submit" class="btn btn-primary btn-full">RECHERCHER</button>
+              <button type="submit" class="btn btn-primary btn-full" aria-label="Rechercher un véhicule">RECHERCHER</button>
             </div>
           </div>
 
@@ -158,16 +159,16 @@
                 
                 <div class="vehicle-features">
                   <div class="feature">
-                    <span class="icon">👤</span> {{vehicle.seats}}
+                    <span class="icon" aria-hidden="true">👤</span> {{vehicle.seats}}
                   </div>
                   <div class="feature">
-                    <span class="icon">🚗</span> {{vehicle.transmission}}
+                    <span class="icon" aria-hidden="true">🚗</span> {{vehicle.transmission}}
                   </div>
                   <div class="feature">
-                    <span class="icon">🧳</span> {{vehicle.luggage}}
+                    <span class="icon" aria-hidden="true">🧳</span> {{vehicle.luggage}}
                   </div>
                   <div class="feature">
-                    <span class="icon">❄️</span> {{vehicle.hasAC ? 'OUI' : 'NON'}}
+                    <span class="icon" aria-hidden="true">❄️</span> {{vehicle.hasAC ? 'OUI' : 'NON'}}
                   </div>
                 </div>
                 
@@ -194,7 +195,7 @@
                 </div>
               </div>
               <div class="vehicle-actions">
-                <button class="btn btn-primary btn-full" (click)="selectVehicle(vehicle)">
+                <button class="btn btn-primary btn-full" (click)="selectVehicle(vehicle)" [attr.aria-label]="'Obtenir un devis et réserver ' + vehicle.name">
                   DEVIS ET RÉSERVATION
                 </button>
               </div>
@@ -263,8 +264,8 @@
               <h3 class="agency-title">{{agency.name}}</h3>
               <p class="agency-description">{{agency.description}}</p>
               <div class="agency-contact">
-                <p class="contact-item"><span class="icon">📞</span> {{agency.phone}}</p>
-                <p class="contact-item"><span class="icon">✉️</span> {{agency.email}}</p>
+                <p class="contact-item"><span class="icon" aria-hidden="true">📞</span> {{agency.phone}}</p>
+                <p class="contact-item"><span class="icon" aria-hidden="true">✉️</span> {{agency.email}}</p>
               </div>
             </div>
           </div>
@@ -284,7 +285,7 @@
                 <input type="date" id="agencyDate">
               </div>
               <div class="form-group">
-                <button class="btn btn-primary btn-full">RECHERCHER</button>
+                <button class="btn btn-primary btn-full" aria-label="Rechercher dans les agences">RECHERCHER</button>
               </div>
             </div>
           </div>
@@ -342,7 +343,7 @@
     <div class="booking-modal" *ngIf="selectedVehicle">
       <div class="modal-header">
         <h2 class="modal-title">Réservation - {{selectedVehicle?.name}}</h2>
-        <button class="close-button" (click)="closeModal()">✕</button>
+        <button class="close-button" (click)="closeModal()" aria-label="Fermer la fenêtre de réservation">✕</button>
       </div>
       <div class="modal-content">
         <div class="booking-details">
@@ -352,16 +353,16 @@
             </div>
             <div class="preview-features">
               <div class="feature">
-                <span class="icon">👤</span> {{selectedVehicle.seats}} sièges
+                <span class="icon" aria-hidden="true">👤</span> {{selectedVehicle.seats}} sièges
               </div>
               <div class="feature">
-                <span class="icon">🚗</span> {{selectedVehicle.transmission}}
+                <span class="icon" aria-hidden="true">🚗</span> {{selectedVehicle.transmission}}
               </div>
               <div class="feature">
-                <span class="icon">🧳</span> {{selectedVehicle.luggage}} bagages
+                <span class="icon" aria-hidden="true">🧳</span> {{selectedVehicle.luggage}} bagages
               </div>
               <div class="feature">
-                <span class="icon">❄️</span> Climatisation: {{selectedVehicle.hasAC ? 'Oui' : 'Non'}}
+                <span class="icon" aria-hidden="true">❄️</span> Climatisation: {{selectedVehicle.hasAC ? 'Oui' : 'Non'}}
               </div>
             </div>
           </div>
@@ -369,14 +370,14 @@
           <div class="booking-info">
             <div class="rental-dates">
               <div class="pickup-info">
-                <h3 class="info-title"><span class="icon">📅</span> Prise en charge</h3>
+                <h3 class="info-title"><span class="icon" aria-hidden="true">📅</span> Prise en charge</h3>
                 <p>{{searchParams.startDate | date:'dd/MM/yyyy'}} à {{searchParams.startTime}}</p>
-                <p><span class="icon">📍</span> {{getLocationName(searchParams.location)}}</p>
+                <p><span class="icon" aria-hidden="true">📍</span> {{getLocationName(searchParams.location)}}</p>
               </div>
               <div class="return-info">
-                <h3 class="info-title"><span class="icon">📅</span> Restitution</h3>
+                <h3 class="info-title"><span class="icon" aria-hidden="true">📅</span> Restitution</h3>
                 <p>{{searchParams.endDate | date:'dd/MM/yyyy'}} à {{searchParams.endTime}}</p>
-                <p><span class="icon">📍</span> 
+                <p><span class="icon" aria-hidden="true">📍</span> 
                   {{differentReturnLocation ? getLocationName(searchParams.returnLocation) : getLocationName(searchParams.location)}}
                 </p>
               </div>
@@ -434,11 +435,12 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-outline" (click)="closeModal()">Annuler</button>
-        <button class="btn btn-primary" (click)="bookVehicle()">
-          <span class="icon">💳</span> CONFIRMER LA RÉSERVATION
+        <button class="btn btn-outline" (click)="closeModal()" aria-label="Annuler la réservation">Annuler</button>
+        <button class="btn btn-primary" (click)="bookVehicle()" aria-label="Confirmer la réservation">
+          <span class="icon" aria-hidden="true">💳</span> CONFIRMER LA RÉSERVATION
         </button>
       </div>
     </div>
   </div>
 </div>
+```

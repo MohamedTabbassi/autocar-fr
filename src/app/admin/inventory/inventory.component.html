@@ -1,0 +1,320 @@
+<div class="inventory-page">
+  <!-- Header -->
+  <div class="page-header">
+    <div class="header-title">
+      <h2>Inventory Management</h2>
+      <p>Manage your auto parts inventory</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn-add" (click)="addNewItem()">
+        <i class="fas fa-plus"></i> Add New Item
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="inventory-content" [ngClass]="{'with-details': selectedItem}">
+    <!-- Filters Sidebar -->
+    <div class="filters-sidebar">
+      <!-- Search -->
+      <div class="filter-section">
+        <div class="filter-header">
+          <h3>Search</h3>
+        </div>
+        <div class="search-box">
+          <input type="text" [(ngModel)]="searchQuery" placeholder="Search by name or SKU...">
+          <button (click)="onSearch()"><i class="fas fa-search"></i></button>
+        </div>
+      </div>
+
+      <!-- Categories -->
+      <div class="filter-section">
+        <div class="filter-header">
+          <h3>Categories</h3>
+        </div>
+        <div class="filter-options">
+          <div *ngFor="let category of categoryFilters" class="filter-option">
+            <label class="checkbox-label">
+              <input type="checkbox" 
+                     [checked]="selectedCategories.includes(category.name)"
+                     (change)="onCategoryChange(category.name, $event)">
+              <span class="checkbox-text">{{ category.name }}</span>
+              <span class="count">{{ category.count }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Manufacturers -->
+      <div class="filter-section">
+        <div class="filter-header">
+          <h3>Manufacturers</h3>
+        </div>
+        <div class="filter-options">
+          <div *ngFor="let manufacturer of manufacturerFilters" class="filter-option">
+            <label class="checkbox-label">
+              <input type="checkbox"
+                     [checked]="selectedManufacturers.includes(manufacturer.name)"
+                     (change)="onManufacturerChange(manufacturer.name, $event)">
+              <span class="checkbox-text">{{ manufacturer.name }}</span>
+              <span class="count">{{ manufacturer.count }}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stock Status -->
+      <div class="filter-section">
+        <div class="filter-header">
+          <h3>Stock Status</h3>
+        </div>
+        <div class="filter-options">
+          <div class="filter-option">
+            <label class="radio-label">
+              <input type="radio" name="stockFilter" value="all" 
+                     [checked]="stockFilter === 'all'"
+                     (change)="onStockFilterChange('all')">
+              <span class="radio-text">All</span>
+            </label>
+          </div>
+          <div class="filter-option">
+            <label class="radio-label">
+              <input type="radio" name="stockFilter" value="in-stock"
+                     [checked]="stockFilter === 'in-stock'"
+                     (change)="onStockFilterChange('in-stock')">
+              <span class="radio-text">In Stock</span>
+            </label>
+          </div>
+          <div class="filter-option">
+            <label class="radio-label">
+              <input type="radio" name="stockFilter" value="low-stock"
+                     [checked]="stockFilter === 'low-stock'"
+                     (change)="onStockFilterChange('low-stock')">
+              <span class="radio-text">Low Stock</span>
+            </label>
+          </div>
+          <div class="filter-option">
+            <label class="radio-label">
+              <input type="radio" name="stockFilter" value="out-of-stock"
+                     [checked]="stockFilter === 'out-of-stock'"
+                     (change)="onStockFilterChange('out-of-stock')">
+              <span class="radio-text">Out of Stock</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clear Filters -->
+      <div class="clear-filters">
+        <button (click)="clearFilters()">Clear All Filters</button>
+      </div>
+    </div>
+
+    <!-- Inventory List -->
+    <div class="inventory-list">
+      <!-- Bulk Actions -->
+      <div class="bulk-actions" *ngIf="showBulkActions">
+        <span>{{ selectedItems.length }} items selected</span>
+        <div class="bulk-buttons">
+          <button class="btn-bulk-update" (click)="bulkUpdateStock()">
+            Update Stock
+          </button>
+          <button class="btn-bulk-delete" (click)="bulkDelete()">
+            Delete
+          </button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="inventory-table">
+        <table>
+          <thead>
+            <tr>
+              <th class="select-col">
+                <input type="checkbox" (change)="selectAllItems($event)">
+              </th>
+              <th class="image-col">Image</th>
+              <th (click)="onSortChange('name')" class="sortable">
+                Product Name
+                <i *ngIf="sortField === 'name'" 
+                   [ngClass]="sortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'"></i>
+              </th>
+              <th (click)="onSortChange('sku')" class="sortable">
+                SKU
+                <i *ngIf="sortField === 'sku'" 
+                   [ngClass]="sortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'"></i>
+              </th>
+              <th>Category</th>
+              <th (click)="onSortChange('price')" class="sortable">
+                Price
+                <i *ngIf="sortField === 'price'" 
+                   [ngClass]="sortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'"></i>
+              </th>
+              <th (click)="onSortChange('stock')" class="sortable">
+                Stock
+                <i *ngIf="sortField === 'stock'" 
+                   [ngClass]="sortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'"></i>
+              </th>
+              <th>Manufacturer</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of getPaginatedItems()">
+              <td class="select-col">
+                <input type="checkbox" 
+                       [checked]="selectedItems.includes(item.id)"
+                       (change)="toggleItemSelection(item.id, $event)">
+              </td>
+              <td class="image-col">
+                <img [src]="item.image" [alt]="item.name">
+              </td>
+              <td class="name-col">{{ item.name }}</td>
+              <td>{{ item.sku }}</td>
+              <td>{{ item.category }}</td>
+              <td>
+                <div class="price-display">
+                  <span class="sale-price" *ngIf="item.salePrice">{{ item.salePrice | currency }}</span>
+                  <span [ngClass]="{'original-price': item.salePrice}">{{ item.price | currency }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="stock-status" [ngClass]="getStockStatus(item)">
+                  {{ item.stock }}
+                </span>
+              </td>
+              <td>{{ item.manufacturer }}</td>
+              <td class="actions-col">
+                <button class="btn-view" (click)="viewItemDetails(item)">
+                  <i class="fas fa-eye"></i>
+                </button>
+                <button class="btn-edit" (click)="editItem(item)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn-delete" (click)="deleteItem(item.id)">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination">
+        <button class="page-btn" [disabled]="currentPage === 1" (click)="onPageChange(1)">
+          <i class="fas fa-angle-double-left"></i>
+        </button>
+        <button class="page-btn" [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">
+          <i class="fas fa-angle-left"></i>
+        </button>
+        
+        <div class="page-numbers">
+          <button *ngFor="let page of getPages()" 
+                  class="page-number" 
+                  [ngClass]="{'active': page === currentPage}"
+                  (click)="onPageChange(page)">
+            {{ page }}
+          </button>
+        </div>
+        
+        <button class="page-btn" [disabled]="currentPage === getTotalPages()" (click)="onPageChange(currentPage + 1)">
+          <i class="fas fa-angle-right"></i>
+        </button>
+        <button class="page-btn" [disabled]="currentPage === getTotalPages()" (click)="onPageChange(getTotalPages())">
+          <i class="fas fa-angle-double-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Item Details Sidebar -->
+    <div class="item-details-sidebar" *ngIf="selectedItem">
+      <div class="details-header">
+        <h3>{{ editMode ? 'Edit Product' : 'Product Details' }}</h3>
+        <button class="btn-close" (click)="closeItemDetails()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="details-content">
+        <div class="item-image">
+          <img [src]="selectedItem.image" [alt]="selectedItem.name">
+        </div>
+        
+        <div class="item-form">
+          <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" [(ngModel)]="selectedItem.name" [disabled]="!editMode">
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>SKU</label>
+              <input type="text" [(ngModel)]="selectedItem.sku" [disabled]="!editMode">
+            </div>
+            <div class="form-group">
+              <label>Manufacturer</label>
+              <input type="text" [(ngModel)]="selectedItem.manufacturer" [disabled]="!editMode">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Category</label>
+              <input type="text" [(ngModel)]="selectedItem.category" [disabled]="!editMode">
+            </div>
+            <div class="form-group">
+              <label>Subcategory</label>
+              <input type="text" [(ngModel)]="selectedItem.subcategory" [disabled]="!editMode">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Regular Price</label>
+              <input type="number" [(ngModel)]="selectedItem.price" [disabled]="!editMode">
+            </div>
+            <div class="form-group">
+              <label>Sale Price</label>
+              <input type="number" [(ngModel)]="selectedItem.salePrice" [disabled]="!editMode">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Stock</label>
+              <input type="number" [(ngModel)]="selectedItem.stock" [disabled]="!editMode">
+            </div>
+            <div class="form-group">
+              <label>Low Stock Threshold</label>
+              <input type="number" [(ngModel)]="selectedItem.lowStockThreshold" [disabled]="!editMode">
+            </div>
+          </div>
+          
+          <div class="form-info">
+            <div class="info-row">
+              <span class="info-label">Created</span>
+              <span class="info-value">{{ selectedItem.createdAt }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Last Updated</span>
+              <span class="info-value">{{ selectedItem.updatedAt }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="details-footer">
+        <button *ngIf="!editMode" class="btn-edit-mode" (click)="editMode = true">
+          Edit Product
+        </button>
+        <button *ngIf="editMode" class="btn-save" (click)="saveItem()">
+          Save Changes
+        </button>
+        <button *ngIf="editMode" class="btn-cancel" (click)="editMode = false">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

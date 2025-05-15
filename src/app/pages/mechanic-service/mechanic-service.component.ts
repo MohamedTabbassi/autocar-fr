@@ -6,7 +6,7 @@ import { RouterLink } from "@angular/router"
 @Component({
   selector: "app-mechanic-service",
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: "./mechanic-service.component.html",
   styleUrls: ["./mechanic-service.component.css"],
 })

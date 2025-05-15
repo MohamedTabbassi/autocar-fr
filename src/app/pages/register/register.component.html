@@ -1,1 +1,186 @@
-<p>register works!</p>
+<div class="register-container">
+  <div class="register-card">
+    <div class="register-header">
+      <img src="assets/images/logo.png" alt="Company Logo" class="register-logo">
+      <h2>Create Account</h2>
+      <p>Join us today and get access to all our services!</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="register-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <div class="input-with-icon">
+            <i class="fas fa-user"></i>
+            <input 
+              type="text" 
+              formControlName="firstName" 
+              id="firstName" 
+              placeholder="Enter your first name"
+              [ngClass]="{ 'is-invalid': submitted && f['firstName'].errors }"
+            />
+          </div>
+          <div *ngIf="submitted && f['firstName'].errors" class="error-message">
+            <div *ngIf="f['firstName'].errors['required']">First name is required</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <div class="input-with-icon">
+            <i class="fas fa-user"></i>
+            <input 
+              type="text" 
+              formControlName="lastName" 
+              id="lastName" 
+              placeholder="Enter your last name"
+              [ngClass]="{ 'is-invalid': submitted && f['lastName'].errors }"
+            />
+          </div>
+          <div *ngIf="submitted && f['lastName'].errors" class="error-message">
+            <div *ngIf="f['lastName'].errors['required']">Last name is required</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-with-icon">
+          <i class="fas fa-envelope"></i>
+          <input 
+            type="email" 
+            formControlName="email" 
+            id="email" 
+            placeholder="Enter your email"
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          />
+        </div>
+        <div *ngIf="submitted && f['email'].errors" class="error-message">
+          <div *ngIf="f['email'].errors['required']">Email is required</div>
+          <div *ngIf="f['email'].errors['email']">Please enter a valid email address</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number</label>
+        <div class="input-with-icon">
+          <i class="fas fa-phone"></i>
+          <input 
+            type="tel" 
+            formControlName="phoneNumber" 
+            id="phoneNumber" 
+            placeholder="Enter your phone number"
+            [ngClass]="{ 'is-invalid': submitted && f['phoneNumber'].errors }"
+          />
+        </div>
+        <div *ngIf="submitted && f['phoneNumber'].errors" class="error-message">
+          <div *ngIf="f['phoneNumber'].errors['required']">Phone number is required</div>
+          <div *ngIf="f['phoneNumber'].errors['pattern']">Please enter a valid phone number</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-with-icon">
+          <i class="fas fa-lock"></i>
+          <input 
+            type="password" 
+            formControlName="password" 
+            id="password" 
+            placeholder="Create a password"
+            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          />
+        </div>
+        <div *ngIf="submitted && f['password'].errors" class="error-message">
+          <div *ngIf="f['password'].errors['required']">Password is required</div>
+          <div *ngIf="f['password'].errors['minlength']">Password must be at least 6 characters</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <div class="input-with-icon">
+          <i class="fas fa-lock"></i>
+          <input 
+            type="password" 
+            formControlName="confirmPassword" 
+            id="confirmPassword" 
+            placeholder="Confirm your password"
+            [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }"
+          />
+        </div>
+        <div *ngIf="submitted && f['confirmPassword'].errors" class="error-message">
+          <div *ngIf="f['confirmPassword'].errors['required']">Please confirm your password</div>
+          <div *ngIf="f['confirmPassword'].errors['mustMatch']">Passwords must match</div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="address">Address (Optional)</label>
+          <div class="input-with-icon">
+            <i class="fas fa-home"></i>
+            <input 
+              type="text" 
+              formControlName="address" 
+              id="address" 
+              placeholder="Enter your address"
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="city">City (Optional)</label>
+          <div class="input-with-icon">
+            <i class="fas fa-city"></i>
+            <input 
+              type="text" 
+              formControlName="city" 
+              id="city" 
+              placeholder="Enter your city"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group terms-checkbox">
+        <input 
+          type="checkbox" 
+          formControlName="agreeTerms" 
+          id="agreeTerms"
+          [ngClass]="{ 'is-invalid': submitted && f['agreeTerms'].errors }"
+        />
+        <label for="agreeTerms">I agree to the <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a></label>
+        <div *ngIf="submitted && f['agreeTerms'].errors" class="error-message">
+          <div *ngIf="f['agreeTerms'].errors['required']">You must agree to the terms and conditions</div>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="loading" class="register-button">
+        <span *ngIf="loading" class="spinner"></span>
+        <span *ngIf="!loading">Create Account</span>
+      </button>
+
+      <div *ngIf="error" class="alert alert-danger mt-3">{{error}}</div>
+    </form>
+
+    <div class="social-register">
+      <p>Or register with</p>
+      <div class="social-buttons">
+        <button class="social-button google">
+          <i class="fab fa-google"></i>
+        </button>
+        <button class="social-button facebook">
+          <i class="fab fa-facebook-f"></i>
+        </button>
+        <button class="social-button twitter">
+          <i class="fab fa-twitter"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="login-link">
+      <p>Already have an account? <a href="/login">Sign In</a></p>
+    </div>
+  </div>
+</div>
