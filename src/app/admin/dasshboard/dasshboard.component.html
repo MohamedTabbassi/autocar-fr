@@ -1,1 +1,233 @@
-<p>dasshboard works!</p>
+<div class="dashboard">
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stats-card">
+      <div class="stats-icon">
+        <i class="fas fa-dollar-sign"></i>
+      </div>
+      <div class="stats-info">
+        <h3>Total Sales</h3>
+        <p class="stats-value">{{ stats.totalSales | currency }}</p>
+        <p class="stats-change positive">+12.5% <span>vs last month</span></p>
+      </div>
+    </div>
+
+    <div class="stats-card">
+      <div class="stats-icon">
+        <i class="fas fa-shopping-cart"></i>
+      </div>
+      <div class="stats-info">
+        <h3>Total Orders</h3>
+        <p class="stats-value">{{ stats.totalOrders }}</p>
+        <p class="stats-change positive">+8.3% <span>vs last month</span></p>
+      </div>
+    </div>
+
+    <div class="stats-card">
+      <div class="stats-icon">
+        <i class="fas fa-calendar-check"></i>
+      </div>
+      <div class="stats-info">
+        <h3>Total Bookings</h3>
+        <p class="stats-value">{{ stats.totalBookings }}</p>
+        <p class="stats-change positive">+5.7% <span>vs last month</span></p>
+      </div>
+    </div>
+
+    <div class="stats-card">
+      <div class="stats-icon">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="stats-info">
+        <h3>Total Customers</h3>
+        <p class="stats-value">{{ stats.totalCustomers }}</p>
+        <p class="stats-change positive">+3.2% <span>vs last month</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="charts-container">
+    <div class="chart-card large">
+      <div class="chart-header">
+        <h3>Sales Overview</h3>
+        <div class="chart-actions">
+          <select>
+            <option>This Year</option>
+            <option>Last Year</option>
+            <option>Last 6 Months</option>
+          </select>
+        </div>
+      </div>
+      <div class="chart-body">
+        <canvas id="salesChart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Orders</h3>
+        <div class="chart-actions">
+          <select>
+            <option>This Year</option>
+            <option>Last 6 Months</option>
+          </select>
+        </div>
+      </div>
+      <div class="chart-body">
+        <canvas id="ordersChart"></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Bookings by Service</h3>
+      </div>
+      <div class="chart-body chart-donut">
+        <canvas id="bookingsChart"></canvas>
+        <div class="chart-center-text">
+          <h4>{{ stats.totalBookings }}</h4>
+          <p>Total Bookings</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Cards -->
+  <div class="status-cards">
+    <div class="status-card warning">
+      <div class="status-icon">
+        <i class="fas fa-clock"></i>
+      </div>
+      <div class="status-info">
+        <h3>Pending Orders</h3>
+        <p class="status-value">{{ stats.pendingOrders }}</p>
+      </div>
+      <div class="status-action">
+        <a href="/admin/orders?status=pending">View All</a>
+      </div>
+    </div>
+
+    <div class="status-card warning">
+      <div class="status-icon">
+        <i class="fas fa-calendar"></i>
+      </div>
+      <div class="status-info">
+        <h3>Pending Bookings</h3>
+        <p class="status-value">{{ stats.pendingBookings }}</p>
+      </div>
+      <div class="status-action">
+        <a href="/admin/bookings?status=pending">View All</a>
+      </div>
+    </div>
+
+    <div class="status-card danger">
+      <div class="status-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      <div class="status-info">
+        <h3>Low Stock Items</h3>
+        <p class="status-value">{{ stats.lowStockItems }}</p>
+      </div>
+      <div class="status-action">
+        <a href="/admin/inventory?stock=low">View All</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tables Section -->
+  <div class="tables-section">
+    <div class="table-card">
+      <div class="table-header">
+        <h3>Recent Activity</h3>
+        <a href="/admin/activity" class="view-all">View All</a>
+      </div>
+      <div class="table-body">
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Action</th>
+              <th>Amount</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let activity of stats.recentActivity">
+              <td>{{ activity.user }}</td>
+              <td>
+                <span class="activity-type" [ngClass]="'activity-' + activity.type">
+                  {{ activity.action }}
+                </span>
+              </td>
+              <td>{{ activity.amount | currency }}</td>
+              <td>{{ activity.time }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <h3>Top Selling Products</h3>
+        <a href="/admin/inventory" class="view-all">View All</a>
+      </div>
+      <div class="table-body">
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Sales</th>
+              <th>Stock</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of stats.topSellingProducts">
+              <td>{{ product.name }}</td>
+              <td>{{ product.sales }}</td>
+              <td>
+                <span [ngClass]="{'stock-low': product.stock < 100}">
+                  {{ product.stock }}
+                </span>
+              </td>
+              <td>{{ product.price | currency }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-header">
+        <h3>Upcoming Bookings</h3>
+        <a href="/admin/bookings" class="view-all">View All</a>
+      </div>
+      <div class="table-body">
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Customer</th>
+              <th>Date & Time</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let booking of stats.upcomingBookings">
+              <td>{{ booking.service }}</td>
+              <td>{{ booking.customer }}</td>
+              <td>{{ booking.date }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(booking.status)">
+                  {{ booking.status }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

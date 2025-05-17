@@ -33,9 +33,5 @@ export class HeaderComponent implements OnInit {
     this.authService.logout();
   }
 
-  toggleLogin(): void {
-    if (this.isLoggedIn) {
-      this.authService.logout();
-    }
-  }}
+  }
     

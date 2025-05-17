@@ -1,4 +1,4 @@
-```html
+
 <div class="car-rental-page">
   <!-- Vehicle Search Form -->
   <section class="search-section">
@@ -151,7 +151,7 @@
             <div *ngFor="let vehicle of filteredVehicles" class="vehicle-card">
               <div *ngIf="vehicle.isNew" class="new-badge">NEW</div>
               <div class="vehicle-image">
-                <img [src]="vehicle.imageUrl || 'assets/images/car-placeholder.jpg'" [alt]="vehicle.name">
+                <img [src]="vehicle.imageUrl || 'public/images/car-placeholder.jpg'" [alt]="vehicle.name">
               </div>
               <div class="vehicle-details">
                 <h3 class="vehicle-title">{{vehicle.name}}</h3>
