@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
       seats: 5,
       transmission: "Manuelle",
       pricePerDay: 32,
-      imageUrl: "assets/images/cars/golf.jpg",
+      imageUrl: "assets/images/golf.jpg",
     },
     {
       id: 2,
@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
       seats: 5,
       transmission: "Manuelle",
       pricePerDay: 22,
-      imageUrl: "assets/images/cars/clio.jpg",
+      imageUrl: "assets/images/clio.jpg",
     },
     {
       id: 3,
@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
       seats: 5,
       transmission: "Manuelle",
       pricePerDay: 20,
-      imageUrl: "assets/images/cars/301.jpg",
+      imageUrl: "assets/images/peugeot301.jpg",
     },
   ]
 
@@ -80,12 +80,12 @@ export class HomeComponent implements OnInit {
 
   // Service categories
   serviceCategories = [
-    { id: "filtres", name: "Filtres", icon: "assets/images/icons/filter.png" },
-    { id: "freinage", name: "Freinage", icon: "assets/images/icons/brake.png" },
-    { id: "courroie", name: "Courroie et chaîne", icon: "assets/images/icons/belt.png" },
-    { id: "allumage", name: "Allumage", icon: "assets/images/icons/spark.png" },
-    { id: "suspension", name: "Suspension", icon: "assets/images/icons/suspension.png" },
-    { id: "direction", name: "Direction", icon: "assets/images/icons/steering.png" },
+    { id: "filtres", name: "Filtres", icon: "assets/images/parts/filter-icon.png" },
+    { id: "freinage", name: "Freinage", icon: "assets/images/parts/brake-icon.png" },
+    { id: "courroie", name: "Courroie et chaîne", icon: "assets/images/parts/belt-icon.png" },
+    { id: "allumage", name: "Allumage", icon: "assets/images/parts/spark-icon.png" },
+    { id: "suspension", name: "Suspension", icon: "assets/images/parts/suspension-icon.png" },
+
   ]
 
   // Locations

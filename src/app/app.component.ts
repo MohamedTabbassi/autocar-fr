@@ -1,5 +1,6 @@
 import { Component } from "@angular/core"
 import { RouterOutlet } from "@angular/router"
+import { HttpClientModule } from '@angular/common/http'
 import { HeaderComponent } from "./components/header/header.component"
 import { FooterComponent } from "./components/footer/footer.component"
 import { SidebarComponent } from "./components/sidebar/sidebar.component"
@@ -7,7 +8,7 @@ import { SidebarComponent } from "./components/sidebar/sidebar.component"
 @Component({
   selector: "app-root",
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, SidebarComponent],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, SidebarComponent,HttpClientModule],
   template: `
     <div class="app-container">
       <app-sidebar></app-sidebar>

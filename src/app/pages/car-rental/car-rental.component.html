@@ -86,7 +86,7 @@
       <div class="tabs-list">
         <button class="tab-button" [class.active]="activeTab === 'cars'" (click)="setActiveTab('cars')">Voitures</button>
         <button class="tab-button" [class.active]="activeTab === 'prices'" (click)="setActiveTab('prices')">Tarifs</button>
-        <button class="tab-button" [class.active]="activeTab === 'agencies'" (click)="setActiveTab('agencies')">Agences</button>
+
         <button class="tab-button" [class.active]="activeTab === 'strengths'" (click)="setActiveTab('strengths')">Points Forts</button>
       </div>
 
@@ -248,49 +248,7 @@
         </div>
       </div>
 
-      <!-- Agencies Tab -->
-      <div class="tab-content" *ngIf="activeTab === 'agencies'">
-        <div class="agencies-container">
-          <h2 class="section-title">Agence location voiture tunisie</h2>
-          <p class="section-description">
-            Tunisia Rent Car est une agence de location de voitures en Tunisie qui propose à ses clients la
-            location de voitures pas chères à tunis et dans toutes les villes touristiques de la tunisie tels que
-            hammamet, tozeur, tabarka, nabeul, sousse, djerba, enfidha, zaghouan, monastir, hergia, bizerte ainsi
-            que les aéroport tunis carthage, aéroport enfidha, aéroport djerba, aéroport sfax, aéroport djerba.
-          </p>
-
-          <div class="agencies-grid">
-            <div *ngFor="let agency of agencies" class="agency-card">
-              <h3 class="agency-title">{{agency.name}}</h3>
-              <p class="agency-description">{{agency.description}}</p>
-              <div class="agency-contact">
-                <p class="contact-item"><span class="icon" aria-hidden="true">📞</span> {{agency.phone}}</p>
-                <p class="contact-item"><span class="icon" aria-hidden="true">✉️</span> {{agency.email}}</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="agency-search">
-            <h3 class="subsection-title">Réserver une voiture</h3>
-            <div class="agency-search-form">
-              <div class="form-group">
-                <label for="agencyLocation">Agence de prise en charge</label>
-                <select id="agencyLocation">
-                  <option value="">Aéroport Tunis Carthage</option>
-                  <option *ngFor="let location of locations" [value]="location.id">{{location.name}}</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="agencyDate">Date de retrait</label>
-                <input type="date" id="agencyDate">
-              </div>
-              <div class="form-group">
-                <button class="btn btn-primary btn-full" aria-label="Rechercher dans les agences">RECHERCHER</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+     
 
       <!-- Strength Points Tab -->
       <div class="tab-content" *ngIf="activeTab === 'strengths'">
