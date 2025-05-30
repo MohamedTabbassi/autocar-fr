@@ -100,10 +100,10 @@ export class AuthService {
   // For demo purposes only - remove in production
   demoLogin(role: UserRole): Observable<AuthResponse> {
     const demoUser: User = {
-      id: "demo-" + Math.random().toString(36).substr(2, 9),
+      _id: "demo-" + Math.random().toString(36).substr(2, 9),
       email: `demo${role}@example.com`,
-      firstName: "Demo",
-      lastName: role.charAt(0).toUpperCase() + role.slice(1),
+      name: "Demo",
+       
       role: role,
       createdAt: new Date(),
     }

@@ -52,7 +52,7 @@
     </div>
   </div>
   <div class="car-actions">
-    <button class="btn btn-primary btn-full" (click)="onBookClick()">
+    <button class="btn btn-primary btn-full" (click)="onBookClick()" [attr.aria-label]="'Obtenir un devis et réserver ' + car.name">
       DEVIS ET RÉSERVATION
     </button>
   </div>

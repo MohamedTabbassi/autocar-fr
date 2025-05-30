@@ -7,7 +7,7 @@
       <span class="logo-icon" [class.visible]="isCollapsed && !isMobile">A</span>
     </div>
     <button class="toggle-button" (click)="toggleSidebar()">
-      <span class="icon">&#9776;</span>
+      <span class="icon">{{ isMobile && isMobileOpen || !isCollapsed ? '✕' : '☰' }}</span>
     </button>
   </div>
 
@@ -16,7 +16,7 @@
       <li *ngFor="let item of navItems" class="nav-item" [class.has-children]="item.children">
         <a [routerLink]="item.route" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-link" *ngIf="!item.children">
           <span class="nav-icon">
-            <i class="icon-{{item.icon}}"></i>
+            {{ item.icon === 'home' ? '🏠' : item.icon === 'car' ? '🚗' : item.icon === 'tools' ? '🔧' : item.icon === 'cog' ? '⚙️' : item.icon === 'truck' ? '🚚' : item.icon === 'envelope' ? '✉️' : '' }}
           </span>
           <span class="nav-text" [class.hidden]="isCollapsed && !isMobile">{{item.name}}</span>
         </a>
@@ -24,10 +24,10 @@
         <div *ngIf="item.children" class="dropdown-container">
           <div class="dropdown-header" (click)="toggleExpandItem(item.name)">
             <span class="nav-icon">
-              <i class="icon-{{item.icon}}"></i>
+              {{ item.icon === 'home' ? '🏠' : item.icon === 'car' ? '🚗' : item.icon === 'tools' ? '🔧' : item.icon === 'cog' ? '⚙️' : item.icon === 'truck' ? '🚚' : item.icon === 'envelope' ? '✉️' : '' }}
             </span>
             <span class="nav-text" [class.hidden]="isCollapsed && !isMobile">{{item.name}}</span>
-            <span class="dropdown-arrow" [class.hidden]="isCollapsed && !isMobile" [class.expanded]="isExpanded(item.name)">&#9662;</span>
+            <span class="dropdown-arrow" [class.hidden]="isCollapsed && !isMobile" [class.expanded]="isExpanded(item.name)">▾</span>
           </div>
           
           <ul class="dropdown-menu" [class.expanded]="isExpanded(item.name)" [class.hidden]="isCollapsed && !isMobile && !isExpanded(item.name)">
@@ -45,20 +45,27 @@
   <div class="sidebar-footer" [class.hidden]="isCollapsed && !isMobile">
     <div class="contact-info">
       <div class="contact-item">
-        <i class="icon-phone"></i>
+        <span class="icon">📞</span>
         <span>+216 23 136 136</span>
       </div>
       <div class="contact-item">
-        <i class="icon-envelope"></i>
+        <span class="icon">✉️</span>
         <span>autoservice.tunisia.com</span>
       </div>
     </div>
   </div>
 </div>
-
-<!-- Fixed toggle button that's always visible when sidebar is collapsed -->
-<button *ngIf="isCollapsed && !isMobile" class="fixed-toggle-button" (click)="toggleSidebar()">
+<!-- Always visible toggle button -->
+<button class="fixed-toggle-button" (click)="toggleSidebar()">
   <span class="icon">&#9776;</span>
 </button>
 
-<div class="sidebar-overlay" [class.visible]="isMobile && isMobileOpen" (click)="toggleSidebar()"></div>
+
+
+<!-- Mobile Toggle Button (Always Visible When Sidebar is Closed on Mobile) -->
+<button *ngIf="isMobile && !isMobileOpen" class="mobile-toggle-button" (click)="toggleSidebar()">
+  <span class="icon">☰</span>
+</button>
+
+<!-- Overlay for Mobile View -->
+<div class="sidebar-overlay" [class.visible]="isMobile && isMobileOpen" (click)="toggleSidebar()"></div>s

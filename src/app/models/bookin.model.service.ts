@@ -1,12 +1,4 @@
-import { Injectable } from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class BookinModelService {
-
-  constructor() { }
-}
 
 export interface Booking {
   _id: string;

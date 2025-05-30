@@ -1,53 +1,51 @@
-import { Component } from "@angular/core"
-import { RouterOutlet } from "@angular/router"
-import { HttpClientModule } from '@angular/common/http'
-import { HeaderComponent } from "./components/header/header.component"
-import { FooterComponent } from "./components/footer/footer.component"
-import { SidebarComponent } from "./components/sidebar/sidebar.component"
+import { Component, OnInit } from "@angular/core";
+import { RouterOutlet } from "@angular/router";
+import { HttpClient } from '@angular/common/http';
+import { HeaderComponent } from "./components/header/header.component";
+import { FooterComponent } from "./components/footer/footer.component";
+import { SidebarComponent } from "./components/sidebar/sidebar.component";
+import { environment } from "./environments/environement.service";
 
 @Component({
   selector: "app-root",
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent, SidebarComponent,HttpClientModule],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent, SidebarComponent],
   template: `
     <div class="app-container">
       <app-sidebar></app-sidebar>
       <div class="main-content">
         <app-header></app-header>
         <main>
+          <a href="#" (click)="testApi($event)" style="display: inline-block; margin-bottom: 20px; color: blue; cursor: pointer;">
+            Test Backend API
+          </a>
           <router-outlet></router-outlet>
         </main>
         <app-footer></app-footer>
       </div>
     </div>
-  `,
-  styles: [
-    `
-    .app-container {
-      display: flex;
-      min-height: 100vh;
-    }
-    
-    .main-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      margin-left: 60px;
-      transition: margin-left 0.3s ease;
-    }
-    
-    @media (max-width: 768px) {
-      .main-content {
-        margin-left: 0;
-      }
-    }
-    
-    main {
-      flex: 1;
-    }
-  `,
-  ],
+  `
 })
-export class AppComponent {
-  title = "autocar"
+export class AppComponent implements OnInit {
+  title = "autocar";
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    // Call API when component loads
+    this.testApi();
+  }
+
+  testApi(event?: Event) {
+    if (event) {
+      event.preventDefault();
+    }
+    const url = `${environment.apiBaseUrl}/auth`;
+    console.log('Testing API:', url);
+    this.http.post<{ success: boolean; message?: string }>(url, { email: "test@example.com", password: "test123" })
+      .subscribe({
+        next: res => console.log('✅ API Response:', res),
+        error: err => console.error('❌ API Error:', err)
+      });
+  }
 }

@@ -1,29 +1,32 @@
-import { Component, OnInit } from "@angular/core"
-import { CommonModule } from "@angular/common"
-import { FormsModule } from "@angular/forms"
-import { RouterLink } from "@angular/router"
-
+import { Component, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { Router } from "@angular/router";
+import { AuthService } from "../../services/auth-service.service";
+import { CartService } from "../../services/cart.service.service";
+import { PartCardComponent } from "../../components/part-card/part-card.component"; 
+import { RouterLink } from "@angular/router";
 @Component({
   selector: "app-auto-parts",
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, PartCardComponent, RouterLink],
   templateUrl: "./auto-parts.component.html",
   styleUrls: ["./auto-parts.component.css"]
 })
 export class AutoPartsComponent implements OnInit {
-  loading = false
-  error: string | null = null
-  searchQuery = ""
-  selectedCategory: string | null = null
-  cartCount = 0
-  cart: any[] = []
-  expandedCategory: string | null = null
-  viewMode: 'grid' | 'list' = 'grid'
+  loading = false;
+  error: string | null = null;
+  searchQuery = "";
+  selectedCategory: string | null = null;
+  cartCount = 0;
+  cart: any[] = [];
+  expandedCategory: string | null = null;
+  viewMode: 'grid' | 'list' = 'grid';
 
   // Vehicle selection
-  selectedManufacturer: string | null = null
-  selectedModel: string | null = null
-  selectedEngine: string | null = null
+  selectedManufacturer: string | null = null;
+  selectedModel: string | null = null;
+  selectedEngine: string | null = null;
 
   // Manufacturers
   manufacturers = [
@@ -37,7 +40,7 @@ export class AutoPartsComponent implements OnInit {
     { id: "toyota", name: "Toyota" },
     { id: "ford", name: "Ford" },
     { id: "fiat", name: "Fiat" },
-  ]
+  ];
 
   // Models
   models = [
@@ -51,7 +54,7 @@ export class AutoPartsComponent implements OnInit {
     { id: "polo", name: "Polo", manufacturer: "volkswagen" },
     { id: "serie3", name: "Série 3", manufacturer: "bmw" },
     { id: "serie5", name: "Série 5", manufacturer: "bmw" },
-  ]
+  ];
 
   // Engines
   engines = [
@@ -61,7 +64,7 @@ export class AutoPartsComponent implements OnInit {
     { id: "1.2puretech", name: "1.2 PureTech", model: "208" },
     { id: "2.0tdi", name: "2.0 TDI", model: "golf" },
     { id: "1.4tsi", name: "1.4 TSI", model: "golf" },
-  ]
+  ];
 
   // Part categories
   partCategories = [
@@ -76,9 +79,9 @@ export class AutoPartsComponent implements OnInit {
     { id: "demarreur", name: "Démarreur et alternateur", icon: "assets/images/parts/starter-icon.png" },
     { id: "electronique", name: "Électronique", icon: "assets/images/parts/electronic-icon.png" },
     { id: "carrosserie", name: "Carrosserie", icon: "assets/images/parts/body-icon.png" },
-  ]
+  ];
 
-  // Sample parts for the filtres category
+  // Sample parts for various categories
   filtresParts = [
     {
       id: 1,
@@ -128,9 +131,8 @@ export class AutoPartsComponent implements OnInit {
       manufacturer: "MANN-FILTER",
       category: "filtres"
     },
-  ]
+  ];
 
-  // Sample parts for the freinage category
   freinageParts = [
     {
       id: 5,
@@ -168,9 +170,8 @@ export class AutoPartsComponent implements OnInit {
       manufacturer: "BOSCH",
       category: "freinage"
     }
-  ]
+  ];
 
-  // Courroie, Tendeur et Chaîne (Belts, Tensioners, and Chains)
   courroieParts = [
     {
       id: 8,
@@ -208,9 +209,8 @@ export class AutoPartsComponent implements OnInit {
       manufacturer: "FEBI BILSTEIN",
       category: "courroie"
     }
-  ]
+  ];
 
-  // Allumage (Ignition)
   allumageParts = [
     {
       id: 11,
@@ -248,9 +248,8 @@ export class AutoPartsComponent implements OnInit {
       manufacturer: "VALEO",
       category: "allumage"
     }
-  ]
+  ];
 
-  // Suspension
   suspensionParts = [
     {
       id: 14,
@@ -288,9 +287,8 @@ export class AutoPartsComponent implements OnInit {
       manufacturer: "BILSTEIN",
       category: "suspension"
     }
-  ]
+  ];
 
-  // Direction et Trains Roulants (Steering and Running Gear)
   directionParts = [
     {
       id: 17,
@@ -328,9 +326,8 @@ export class AutoPartsComponent implements OnInit {
       manufacturer: "BOSCH",
       category: "direction"
     }
-  ]
+  ];
 
-  // Embrayage (Clutch)
   embrayageParts = [
     {
       id: 20,
@@ -368,9 +365,8 @@ export class AutoPartsComponent implements OnInit {
       manufacturer: "SACHS",
       category: "embrayage"
     }
-  ]
+  ];
 
-  // Moteur (Engine)
   moteurParts = [
     {
       id: 23,
@@ -408,9 +404,8 @@ export class AutoPartsComponent implements OnInit {
       manufacturer: "ELRING",
       category: "moteur"
     }
-  ]
+  ];
 
-  // Éclairage (Lighting)
   eclairageParts = [
     {
       id: 26,
@@ -448,9 +443,8 @@ export class AutoPartsComponent implements OnInit {
       manufacturer: "TYC",
       category: "eclairage"
     }
-  ]
+  ];
 
-  // Démarreur et Alternateur (Starter and Alternator)
   demarreurParts = [
     {
       id: 29,
@@ -469,7 +463,7 @@ export class AutoPartsComponent implements OnInit {
       name: "Alternateur VALEO 437400",
       reference: "437400",
       compatibility: "Suzuki Swift, Hyundai i10",
-      description: "Alternateur pour une alimentation électrique stable",
+      description: "Alternator pour une alimentation électrique stable",
       price: 150.0,
       inStock: true,
       imageUrl: "assets/images/parts/alternator.jpg",
@@ -488,9 +482,8 @@ export class AutoPartsComponent implements OnInit {
       manufacturer: "BOSCH",
       category: "demarreur"
     }
-  ]
+  ];
 
-  // Électronique (Electronics)
   electroniqueParts = [
     {
       id: 32,
@@ -528,9 +521,8 @@ export class AutoPartsComponent implements OnInit {
       manufacturer: "NGK",
       category: "electronique"
     }
-  ]
+  ];
 
-  // Carrosserie (Bodywork)
   carrosserieParts = [
     {
       id: 35,
@@ -568,23 +560,36 @@ export class AutoPartsComponent implements OnInit {
       manufacturer: "DIEDERICHS",
       category: "carrosserie"
     }
-  ]
+  ];
 
-  constructor() {}
+  constructor(private cartService: CartService, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    // Initialize with default data
-    this.loadParts()
+    this.loadParts();
+    this.loadCart();
+  }
+
+  loadCart(): void {
+    this.cartService.getCart().subscribe({
+      next: (response) => {
+        if (response.success && response.data) {
+          this.cart = response.data.items;
+          this.cartCount = response.data.items.reduce((sum, item) => sum + item.quantity, 0);
+        }
+      },
+      error: (error) => {
+        console.error('Error loading cart:', error);
+      }
+    });
   }
 
   loadParts(): void {
-    this.loading = true
+    this.loading = true;
     setTimeout(() => {
-      this.loading = false
-    }, 1000)
+      this.loading = false;
+    }, 1000);
   }
 
-  // Get all parts
   get allParts(): any[] {
     return [
       ...this.filtresParts,
@@ -599,127 +604,148 @@ export class AutoPartsComponent implements OnInit {
       ...this.demarreurParts,
       ...this.electroniqueParts,
       ...this.carrosserieParts
-    ]
+    ];
   }
 
-  // Get filtered parts based on category, search, and vehicle
   get filteredParts(): any[] {
-    let parts = this.allParts
+    let parts = this.allParts;
 
     // Filter by category
     if (this.selectedCategory) {
-      parts = parts.filter(part => part.category === this.selectedCategory)
+      parts = parts.filter(part => part.category === this.selectedCategory);
     }
 
     // Filter by search query
     if (this.searchQuery) {
-      const query = this.searchQuery.toLowerCase()
+      const query = this.searchQuery.toLowerCase();
       parts = parts.filter(part =>
         part.reference.toLowerCase().includes(query) ||
         part.name.toLowerCase().includes(query)
-      )
+      );
     }
 
     // Filter by vehicle
     if (this.selectedModel) {
-      const modelName = this.models.find(model => model.id === this.selectedModel)?.name
+      const modelName = this.models.find(model => model.id === this.selectedModel)?.name;
       if (modelName) {
-        parts = parts.filter(part => part.compatibility.includes(modelName))
+        parts = parts.filter(part => part.compatibility.includes(modelName));
       }
     }
 
-    return parts
+    return parts;
   }
 
   getFilteredModels(): any[] {
-    if (!this.selectedManufacturer) return []
-    return this.models.filter((model) => model.manufacturer === this.selectedManufacturer)
+    if (!this.selectedManufacturer) return [];
+    return this.models.filter((model) => model.manufacturer === this.selectedManufacturer);
   }
 
   getFilteredEngines(): any[] {
-    if (!this.selectedModel) return []
-    return this.engines.filter((engine) => engine.model === this.selectedModel)
+    if (!this.selectedModel) return [];
+    return this.engines.filter((engine) => engine.model === this.selectedModel);
   }
 
   searchParts(): void {
     if (!this.searchQuery) {
-      this.error = "Veuillez entrer une référence ou un nom de pièce"
-      setTimeout(() => this.error = null, 3000)
-      return
+      this.error = "Veuillez entrer une référence ou un nom de pièce";
+      setTimeout(() => this.error = null, 3000);
+      return;
     }
-    this.loading = true
+    this.loading = true;
     setTimeout(() => {
-      this.loading = false
-    }, 1000)
+      this.loading = false;
+    }, 1000);
   }
 
   searchByVehicle(): void {
     if (!this.selectedManufacturer || !this.selectedModel) {
-      this.error = "Veuillez sélectionner un constructeur et un modèle"
-      setTimeout(() => this.error = null, 3000)
-      return
+      this.error = "Veuillez sélectionner un constructeur et un modèle";
+      setTimeout(() => this.error = null, 3000);
+      return;
     }
     alert(
       `Recherche de pièces pour ${this.getManufacturerName(this.selectedManufacturer)} ${this.getModelName(
         this.selectedModel,
       )} ${this.getEngineName(this.selectedEngine)}`
-    )
-    this.loading = true
+    );
+    this.loading = true;
     setTimeout(() => {
-      this.loading = false
-    }, 1000)
+      this.loading = false;
+    }, 1000);
   }
 
   getManufacturerName(id: string | null): string {
-    const manufacturer = this.manufacturers.find((m) => m.id === id)
-    return manufacturer ? manufacturer.name : ""
+    const manufacturer = this.manufacturers.find((m) => m.id === id);
+    return manufacturer ? manufacturer.name : "";
   }
 
   getModelName(id: string | null): string {
-    const model = this.models.find((m) => m.id === id)
-    return model ? model.name : ""
+    const model = this.models.find((m) => m.id === id);
+    return model ? model.name : "";
   }
 
   getEngineName(id: string | null): string {
-    const engine = this.engines.find((e) => e.id === id)
-    return engine ? engine.name : ""
+    const engine = this.engines.find((e) => e.id === id);
+    return engine ? engine.name : "";
   }
 
   addToCart(part: any): void {
-    this.cart.push(part)
-    this.cartCount = this.cart.length
-    alert(`${part.name} ajouté au panier !`)
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    this.loading = true;
+    this.cartService.addToCart(part.id.toString(), 1).subscribe({
+      next: (response) => {
+        if (response.success && response.data) {
+          this.cart = response.data.items;
+          this.cartCount = response.data.items.reduce((sum, item) => sum + item.quantity, 0);
+          alert(`${part.name} ajouté au panier !`);
+        }
+        this.loading = false;
+      },
+      error: (error) => {
+        this.error = error.message;
+        this.loading = false;
+        console.error('Error adding to cart:', error);
+      }
+    });
+  }
+
+  redirectToLogin(): void {
+    this.router.navigate(['/login']);
   }
 
   getCategoryName(): string {
-    if (!this.selectedCategory) return "Pièces auto"
-    const category = this.partCategories.find((c) => c.id === this.selectedCategory)
-    return category?.name || "Pièces auto"
+    if (!this.selectedCategory) return "Pièces auto";
+    const category = this.partCategories.find((c) => c.id === this.selectedCategory);
+    return category?.name || "Pièces auto";
   }
 
   getCartTotal(): number {
-    return this.cart.reduce((sum, item) => sum + item.price, 0)
+    return this.cart.reduce((sum, item) => sum + item.price, 0);
   }
 
   getCartCountText(): string {
-    return `${this.cart.length} article${this.cart.length > 1 ? "s" : ""}`
+    return `${this.cart.length} article${this.cart.length > 1 ? "s" : ""}`;
   }
 
   resetCategory(): void {
-    this.selectedCategory = null
-    this.expandedCategory = null
+    this.selectedCategory = null;
+    this.expandedCategory = null;
   }
 
   toggleCategory(categoryId: string): void {
     if (this.expandedCategory === categoryId) {
-      this.expandedCategory = null
+      this.expandedCategory = null;
     } else {
-      this.expandedCategory = categoryId
-      this.selectedCategory = categoryId
+      this.expandedCategory = categoryId;
+      this.selectedCategory = categoryId;
     }
   }
 
   setViewMode(mode: 'grid' | 'list'): void {
-    this.viewMode = mode
+    this.viewMode = mode;
   }
 }

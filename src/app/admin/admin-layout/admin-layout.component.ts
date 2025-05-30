@@ -7,7 +7,7 @@ import { CommonModule } from "@angular/common"
 @Component({
   selector: "app-admin-layout",
   imports:[CommonModule],
-  templateUrl: "./admin-layout.component.html",
+  templateUrl:"./admin-layout.component.html",
   styleUrls: ["./admin-layout.component.css"],
 })
 export class AdminLayoutComponent implements OnInit {

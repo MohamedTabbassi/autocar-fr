@@ -5,8 +5,7 @@
       <h2>Create Account</h2>
       <p>Join us today and get access to all our services!</p>
     </div>
-
-    <form (ngSubmit)="onSubmit()" class="register-form">
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
       <div class="form-row">
         <div class="form-group">
           <label for="firstName">First Name</label>

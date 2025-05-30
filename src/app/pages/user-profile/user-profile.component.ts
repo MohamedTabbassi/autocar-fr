@@ -13,8 +13,8 @@
       <div class="profile-container">
         <h2>Mon Profil</h2>
         <div *ngIf="user" class="profile-details">
-          <p><strong>Prénom:</strong> {{user.firstName}}</p>
-          <p><strong>Nom:</strong> {{user.lastName}}</p>
+          <p><strong>Prénom:</strong> {{user.name}}</p>
+          <p><strong>Nom:</strong> {{user.name}}</p>
           <p><strong>Email:</strong> {{user.email}}</p>
           <p><strong>Rôle:</strong> {{user.role}}</p>
           <p><strong>Inscrit le:</strong> {{user.createdAt | date:'dd/MM/yyyy'}}</p>

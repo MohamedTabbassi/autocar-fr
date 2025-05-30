@@ -38,10 +38,6 @@
     </div>
 
     <div *ngIf="!loading && !error" class="services-grid">
-       {{error}}
-    </div>
-
-    <div *ngIf="!loading && !error" class="services-grid">
       <div *ngFor="let service of filteredServices" class="service-card">
         <div class="service-image">
           <img [src]="service.imageUrl || 'assets/images/service-placeholder.jpg'" [alt]="service.name">
@@ -54,7 +50,7 @@
             <span *ngIf="service.duration" class="service-detail">Durée: {{service.duration}}</span>
             <span *ngIf="service.warranty" class="service-detail">Garantie: {{service.warranty}}</span>
           </div>
-          <button class="btn btn-primary btn-full">Réserver</button>
+          <button class="btn btn-primary btn-full" (click)="reserveService(service)">Réserver</button>
         </div>
       </div>
     </div>

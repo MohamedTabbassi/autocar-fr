@@ -6,7 +6,7 @@
       <p>Welcome back! Please login to your account.</p>
     </div>
 
-    <form (ngSubmit)="onSubmit()" class="login-form">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
       <div class="form-group">
         <label for="email">Email</label>
         <div class="input-with-icon">

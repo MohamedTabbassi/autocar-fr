@@ -1,6 +1,6 @@
-import { Component, HostListener } from "@angular/core"
-import { CommonModule } from "@angular/common"
-import { RouterLink, RouterLinkActive } from "@angular/router"
+import { Component, HostListener, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { RouterLink, RouterLinkActive } from "@angular/router";
 
 @Component({
   selector: "app-sidebar",
@@ -9,28 +9,15 @@ import { RouterLink, RouterLinkActive } from "@angular/router"
   templateUrl: "./sidebar.component.html",
   styleUrls: ["./sidebar.component.css"],
 })
-export class SidebarComponent {
-  isCollapsed = false
-  isMobile = false
-  isMobileOpen = false
+export class SidebarComponent implements OnInit {
+  isCollapsed = false;
+  isMobile = false;
+  isMobileOpen = false;
 
-  // Data for sidebar navigation
   navItems = [
-    {
-      name: "Accueil",
-      icon: "home",
-      route: "/",
-    },
-    {
-      name: "Location",
-      icon: "car",
-      route: "/car-rental",
-    },
-    {
-      name: "Mécanique",
-      icon: "tools",
-      route: "/mechanic-service",
-    },
+    { name: "Accueil", icon: "home", route: "/" },
+    { name: "Location", icon: "car", route: "/car-rental" },
+    { name: "Mécanique", icon: "tools", route: "/mechanic-service" },
     {
       name: "Pièces Auto",
       icon: "cog",
@@ -44,61 +31,52 @@ export class SidebarComponent {
         { name: "Direction", route: "/auto-parts/direction" },
       ],
     },
-    {
-      name: "Atelier Mobile",
-      icon: "truck",
-      route: "/mobile-mechanic",
-    },
-    {
-      name: "Contact",
-      icon: "envelope",
-      route: "/contact",
-    },
-  ]
+    { name: "Atelier Mobile", icon: "truck", route: "/mobile-mechanic" },
+    { name: "Contact", icon: "envelope", route: "/contact" },
+  ];
 
-  // Expanded state for dropdown menus
-  expandedItems: { [key: string]: boolean } = {}
+  expandedItems: { [key: string]: boolean } = {};
 
   constructor() {
-    // We'll check if we're in a browser environment before accessing window
-    if (typeof window !== "undefined") {
-      this.checkScreenSize()
-    } else {
-      // Default values for server-side rendering
-      this.isMobile = false
-      this.isCollapsed = false
-    }
+    this.checkScreenSize();
+  }
+
+  ngOnInit(): void {
+    this.checkScreenSize();
   }
 
   @HostListener("window:resize")
   checkScreenSize(): void {
-    // Only run this in browser environment
     if (typeof window !== "undefined") {
-      this.isMobile = window.innerWidth < 768
+      const width = window.innerWidth;
+      this.isMobile = width < 768;
       if (this.isMobile) {
-        this.isCollapsed = true
+        this.isCollapsed = true;
+        this.isMobileOpen = false; // Ensure sidebar is closed on mobile by default
+      } else {
+        this.isMobileOpen = false; // Reset mobile open state on desktop
+        this.isCollapsed = false; // Default to expanded on desktop
       }
     }
   }
 
   toggleSidebar(): void {
     if (this.isMobile) {
-      this.isMobileOpen = !this.isMobileOpen
+      this.isMobileOpen = !this.isMobileOpen;
     } else {
-      this.isCollapsed = !this.isCollapsed
+      this.isCollapsed = !this.isCollapsed;
+      if (this.isCollapsed) {
+        this.expandedItems = {}; // Collapse all dropdowns when sidebar collapses
+      }
     }
   }
 
- toggleExpandItem(itemName: string): void {
-  if (this.isCollapsed && !this.isMobile) return; // prevent expansion when collapsed on desktop
-  if (this.expandedItems[itemName]) {
-    delete this.expandedItems[itemName];
-  } else {
-    this.expandedItems[itemName] = true;
+  toggleExpandItem(itemName: string): void {
+    if (this.isCollapsed && !this.isMobile) return;
+    this.expandedItems[itemName] = !this.expandedItems[itemName];
   }
-}
 
   isExpanded(name: string): boolean {
-    return this.expandedItems[name] || false
+    return this.expandedItems[name] || false;
   }
 }

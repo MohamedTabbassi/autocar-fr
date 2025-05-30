@@ -1,29 +1,23 @@
-export interface User {
-  id?: string
-  email: string
-  firstName: string
-  lastName: string
-  password?: string // Only used during registration, not stored in state
-  role: UserRole
-  phoneNumber?: string
-  address?: string
-  city?: string
-  createdAt?: Date
-  lastLogin?: Date
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  CLIENT = 'CLIENT',
+  SERVICE_USER = 'SERVICE_USER'
 }
 
-export enum UserRole {
-  CUSTOMER = "customer",
-  ADMIN = "admin",
-  MANAGER = "manager",
-  MECHANIC = "mechanic",
-  INVENTORY = "inventory",
+export interface User {
+  _id: string; // Matches backend
+  name: string; // Single name field
+  email: string;
+  role: UserRole;
+  phone?: string;
+  address?: string;
+  createdAt?: Date;
 }
 
 export interface AuthState {
-  user: User | null
-  token: string | null
-  isAuthenticated: boolean
-  isLoading: boolean
-  error: string | null
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error: string | null;
 }

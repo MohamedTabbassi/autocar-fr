@@ -5,5 +5,5 @@ Injectable({
 })
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://localhost:4000/api.com/api', // Replace with your production backend URL
+  apiBaseUrl: 'http://localhost:5000/api.com/api', // Replace with your production backend URL
 };

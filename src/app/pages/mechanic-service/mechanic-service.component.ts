@@ -1,9 +1,8 @@
-import { Component, type OnInit } from "@angular/core"
-import { CommonModule } from "@angular/common"
-import { FormsModule } from "@angular/forms"
-import { RouterLink } from "@angular/router"
-import { ApiService } from "../../services/api.service"
-import { AuthService } from "../../services/auth-service.service"
+import { Component, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { HttpClient } from "@angular/common/http";
+
 @Component({
   selector: "app-mechanic-service",
   standalone: true,
@@ -12,9 +11,9 @@ import { AuthService } from "../../services/auth-service.service"
   styleUrls: ["./mechanic-service.component.css"],
 })
 export class MechanicServiceComponent implements OnInit {
-  loading = false
-  error: string | null = null
-  selectedCategory = ""
+  loading = false;
+  error: string | null = null;
+  selectedCategory = "";
 
   // For appointment booking
   appointmentRequest = {
@@ -28,7 +27,7 @@ export class MechanicServiceComponent implements OnInit {
     contactNumber: "",
     additionalInfo: "",
     serviceLocation: "shop", // Default to shop, can be 'shop' or 'home'
-  }
+  };
 
   // Service categories
   serviceCategories = [
@@ -40,7 +39,7 @@ export class MechanicServiceComponent implements OnInit {
     { id: "engine", name: "Moteur" },
     { id: "electrical", name: "Système électrique" },
     { id: "mobile", name: "Service à domicile" },
-  ]
+  ];
 
   // Expanded mechanic services
   mechanicServices = [
@@ -309,62 +308,84 @@ export class MechanicServiceComponent implements OnInit {
       warranty: "N/A",
       imageUrl: "assets/images/services/mobile-diagnostic.jpg",
     },
-  ]
+  ];
 
-  constructor(private apiService: ApiService, private authService: AuthService) {}
+constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-
-    
+    this.loadServices();
   }
 
-  
+  loadServices(): void {
+    this.loading = true;
+    // Simulate API call with a timeout
+    setTimeout(() => {
+      this.loading = false;
+    }, 1000); // Mock 1-second loading
+  }
+
   // Get filtered services based on category
   get filteredServices() {
     return this.selectedCategory
       ? this.mechanicServices.filter((service) => service.category === this.selectedCategory)
-      : this.mechanicServices
+      : this.mechanicServices;
   }
 
   handleInputChange(event: Event): void {
-    const element = event.target as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    const { name, value } = element
+    const element = event.target as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+    const { name, value } = element;
     this.appointmentRequest = {
       ...this.appointmentRequest,
       [name]: value,
-    }
+    };
   }
+
+  bookAppointment(event: Event): void {
+event.preventDefault();
+this.loading = true;
+
+this.http.post('http://localhost:3001/api/appointments', this.appointmentRequest).subscribe({
+next: () => {
+alert("Rendez-vous envoyé avec succès !");
+this.loading = false;
+// reset form here...
+},
+error: (err) => {
+console.error("Erreur:", err);
+this.loading = false;
+alert("Erreur lors de l'envoi du rendez-vous.");
+}
+});
+}
 
   handleRadioChange(value: string): void {
     this.appointmentRequest = {
       ...this.appointmentRequest,
       serviceLocation: value,
-    }
+    };
   }
 
-  bookAppointment(event: Event): void {
-    event.preventDefault()
-    // Here you would implement the API call to book an appointment
-    const locationText = this.appointmentRequest.serviceLocation === "home" ? "à domicile" : "à l'atelier"
-    alert(`Demande de rendez-vous ${locationText} envoyée! Nous vous contacterons pour confirmer.`)
-    console.log("Appointment request:", this.appointmentRequest)
+  
 
-    // Reset form
-    this.appointmentRequest = {
-      serviceType: "",
-      vehicleMake: "",
-      vehicleModel: "",
-      vehicleYear: "",
-      preferredDate: "",
-      preferredTime: "",
-      customerName: "",
-      contactNumber: "",
-      additionalInfo: "",
-      serviceLocation: "shop",
-    }
+  reserveService(service: any): void {
+    console.log('reserveService called with service:', service);
+
+    // Pre-fill the appointment form with the selected service
+    this.appointmentRequest.serviceType = service.category;
+
+    // Scroll to the appointment section after a slight delay to ensure DOM is ready
+    setTimeout(() => {
+      const appointmentSection = document.querySelector('.appointment-section');
+      if (appointmentSection) {
+        console.log('Scrolling to appointment section...');
+        appointmentSection.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        console.error('Appointment section not found in the DOM.');
+      }
+    }, 0);
   }
 
   setCategory(category: string): void {
-    this.selectedCategory = category === this.selectedCategory ? "" : category
+    this.selectedCategory = category === this.selectedCategory ? "" : category;
   }
 }
