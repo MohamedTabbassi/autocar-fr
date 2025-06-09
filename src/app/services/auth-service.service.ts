@@ -139,21 +139,35 @@ export class AuthService {
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
   }
-
-  demoLogin(role: UserRole): Observable<AuthResponse> {
-    const demoUser: User = {
-      _id: 'demo-' + Math.random().toString(36).substr(2, 9),
-      email: `demo${role}@example.com`,
-      name: 'Demo ' + role,
-      role: role,
-      createdAt: new Date()
-    };
-    const demoResponse: AuthResponse = {
-      success: true,
-      user: demoUser,
-      token: 'demo-token-' + Math.random().toString(36).substr(2, 16)
-    };
-    this.handleAuthentication(demoResponse);
-    return of(demoResponse);
+  updatePassword(oldPassword: string, newPassword: string): Observable<{ success: boolean; message: string }> {
+    const url = `${this.apiUrl}/auth/password`;
+    return this.http
+      .put<{ success: boolean; message: string }>(
+        url,
+        { oldPassword, newPassword },
+        { headers: this.getHeaders() }
+      )
+      .pipe(catchError(this.handleError));
   }
+
+ demoLogin(role: UserRole): Observable<AuthResponse> {
+  const demoUser: User = {
+    _id: 'demo-' + Math.random().toString(36).substr(2, 9),
+    email: `demo${role.toLowerCase()}@example.com`,
+    name: `Demo ${role}`,
+    role: role,
+    createdAt: new Date()
+  };
+
+  const demoResponse: AuthResponse = {
+    success: true,
+    user: demoUser,
+    token: 'demo-token-' + Math.random().toString(36).substr(2, 16)
+  };
+
+  // On stocke user + token comme un login normal
+  this.handleAuthentication(demoResponse);
+  return of(demoResponse);
+}
+
 }

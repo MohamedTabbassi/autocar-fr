@@ -11,7 +11,7 @@ import { ApiService } from "../../services/api.service";
   styleUrls: ["./contact.component.css"],
 })
 export class ContactComponent {
-  // Contact form model
+  
   contactForm = {
     name: "",
     email: "",
@@ -19,15 +19,16 @@ export class ContactComponent {
     message: "",
   };
 
-  // Success or error message after form submission
+  
   formMessage: string | null = null;
 
-  constructor(private apiService: ApiService) {} // Inject ApiService
+  constructor(private apiService: ApiService) {} 
 
   // Handle form submission
   submitContactForm(event: Event): void {
     event.preventDefault();
-
+    console.log('Submitting form...', this.contactForm);
+const url = '${this.apiUrl}/contact';
     // Basic validation
     if (!this.contactForm.name || !this.contactForm.email || !this.contactForm.message) {
       this.formMessage = "Veuillez remplir tous les champs obligatoires.";

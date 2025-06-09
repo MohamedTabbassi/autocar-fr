@@ -16,9 +16,8 @@ import { environment } from "./environments/environement.service";
       <div class="main-content">
         <app-header></app-header>
         <main>
-          <a href="#" (click)="testApi($event)" style="display: inline-block; margin-bottom: 20px; color: blue; cursor: pointer;">
-            Test Backend API
-          </a>
+
+      
           <router-outlet></router-outlet>
         </main>
         <app-footer></app-footer>

@@ -19,19 +19,11 @@
         <span class="icon">🧳</span> {{car.luggage || 3}}
       </div>
       <div class="feature">
-        <span class="icon">❄️</span> {{car.hasAC ? 'OUI' : 'NON'}}
+        <span class="icon">🔥 </span> {{car.hasAC ? 'OUI' : 'NON'}}
       </div>
     </div>
     
-    <div class="car-includes">
-      <p class="includes-title">Prix comprend:</p>
-      <ul class="includes-list">
-        <li>Kilométrage illimité</li>
-        <li>Assurance au tiers</li>
-        <li>Surcharge Aéroport/Gare</li>
-        <li>Caution : 600 €</li>
-      </ul>
-    </div>
+  
     
     <div class="car-price">
       <div *ngIf="car.startDate && car.endDate" class="price-period">
@@ -44,10 +36,10 @@
         <span *ngIf="!car.startDate || !car.endDate">
           {{car.pricePerDay}}
         </span>
-        €
+        
       </div>
       <div class="price-per-day">
-        {{car.pricePerDay}} € <span class="per-day">/jour</span>
+        {{car.pricePerDay}} DT <span class="per-day">/jour</span>
       </div>
     </div>
   </div>

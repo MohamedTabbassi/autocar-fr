@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
       class: "C",
       seats: 5,
       transmission: "Manuelle",
-      pricePerDay: 32,
+      pricePerDay: 132,
       imageUrl: "assets/images/golf.jpg",
     },
     {
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
       class: "A",
       seats: 5,
       transmission: "Manuelle",
-      pricePerDay: 22,
+      pricePerDay: 122,
       imageUrl: "assets/images/clio.jpg",
     },
     {
@@ -51,7 +51,7 @@ export class HomeComponent implements OnInit {
       class: "B",
       seats: 5,
       transmission: "Manuelle",
-      pricePerDay: 20,
+      pricePerDay: 120,
       imageUrl: "assets/images/peugeot301.jpg",
     },
   ]

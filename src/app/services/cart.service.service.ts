@@ -11,7 +11,7 @@ interface CartItem {
 }
 
 interface Cart {
-  _id: string;
+  id: string;
   userId: string;
   items: Array<{
     productId: any; // Populated product
@@ -51,18 +51,20 @@ export class CartService {
     }
     return headers;
   }
-
-  addToCart(productId: string, quantity: number = 1): Observable<ApiResponse<Cart>> {
-    const body = { productId, quantity };
-    return this.http.post<ApiResponse<Cart>>(`${this.apiUrl}/add`, body, { headers: this.getHeaders() }).pipe(
-      tap(response => {
-        if (response.success && response.data) {
-          console.log('Added to cart:', response.data);
-        }
-      }),
-      catchError(this.handleError)
-    );
-  }
+addToCart(productId: string, quantity: number = 1): Observable<ApiResponse<Cart>> {
+const body = { productId, quantity };
+return this.http.post<ApiResponse<Cart>>(`${this.apiUrl}/add`, body, {
+headers: this.getHeaders(),
+}).pipe(
+tap(response => {
+if (response.success && response.data) {
+console.log('Added to cart:', response.data);
+}
+}),
+catchError(this.handleError)
+);
+}
+ 
 
   getCart(): Observable<ApiResponse<Cart>> {
     return this.http.get<ApiResponse<Cart>>(this.apiUrl, { headers: this.getHeaders() }).pipe(

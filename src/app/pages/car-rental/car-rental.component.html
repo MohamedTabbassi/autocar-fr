@@ -79,14 +79,7 @@
   </section>
 
   <!-- Main Content -->
-  <div class="container">
-    <!-- Main Content Tabs -->
-    <div class="tabs-container">
-      <div class="tabs-list">
-        <button class="tab-button" [class.active]="activeTab === 'cars'" (click)="setActiveTab('cars')">Voitures</button>
-        <button class="tab-button" [class.active]="activeTab === 'prices'" (click)="setActiveTab('prices')">Tarifs</button>
-        <button class="tab-button" [class.active]="activeTab === 'strengths'" (click)="setActiveTab('strengths')">Points Forts</button>
-      </div>
+ 
 
       <!-- Cars Tab -->
       <div class="tab-content" *ngIf="activeTab === 'cars'">
@@ -160,91 +153,9 @@
         </div>
       </div>
 
-      <!-- Prices Tab -->
-      <div class="tab-content" *ngIf="activeTab === 'prices'">
-        <div class="prices-container">
-          <h2 class="section-title">Tarifs / Prix location voiture en Tunisie</h2>
-          <p class="section-description">
-            Tunisia Rent Car est un acteur incontournable de la location de voitures en Tunisie via le site de
-            réservation <strong>www.tunisia-rent-car.com</strong>. Loueur de véhicules de proximité, Tunisia Rent
-            Car possède un large choix de véhicules, répartis dans un réseau de plusieurs agences de
-            <strong>location</strong> et points relais.
-          </p>
+      
 
-          <h3 class="subsection-title">Prix / tarifs pas chers location voitures en Tunisie</h3>
-          <div class="price-table-container">
-            <table class="price-table">
-              <thead>
-                <tr>
-                  <th>Classe</th>
-                  <th>Voitures</th>
-                  <th>3 Jours<br>prix jour</th>
-                  <th>1 Semaine<br>prix jour</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let car of priceTable; let i = index" [class.even]="i % 2 === 0">
-                  <td>{{car.class}}</td>
-                  <td>{{car.model}}</td>
-                  <td>{{car.price3Days}} €</td>
-                  <td>{{car.price1Week}} €</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="price-notes">
-            <p>* Les prix sont donnés à titre indicatif et peuvent varier selon la saison et la disponibilité.</p>
-            <p>* Tous nos tarifs comprennent : kilométrage illimité, assurance au tiers et taxes locales.</p>
-            <p>* Options supplémentaires disponibles : GPS, siège bébé, assurance tous risques, etc.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Strength Points Tab -->
-      <div class="tab-content" *ngIf="activeTab === 'strengths'">
-        <div class="strengths-container">
-          <h2 class="section-title">Points Forts de Tunisia Rent Car</h2>
-          <p class="section-description">
-            Chez Tunisia Rent Car, nous mettons tout en œuvre pour vous garantir un service de qualité et une
-            expérience de location sans tracas. Découvrez nos principaux points forts qui font de nous le choix
-            privilégié pour la location de voiture en Tunisie.
-          </p>
-
-          <div class="strengths-grid">
-            <div *ngFor="let point of strengthPoints" class="strength-card">
-              <h3 class="strength-title">{{point.title}}</h3>
-              <p class="strength-description">{{point.description}}</p>
-            </div>
-          </div>
-
-          <div class="why-choose-us">
-            <h3 class="subsection-title">Pourquoi choisir Tunisia Rent Car ?</h3>
-            <ul class="benefits-list">
-              <li class="benefit-item">
-                <span class="benefit-label">Expérience :</span>
-                <span class="benefit-text">Plus de 15 ans d'expertise dans la location de voitures en Tunisie</span>
-              </li>
-              <li class="benefit-item">
-                <span class="benefit-label">Transparence :</span>
-                <span class="benefit-text">Pas de frais cachés, tout est clairement indiqué dès la réservation</span>
-              </li>
-              <li class="benefit-item">
-                <span class="benefit-label">Flexibilité :</span>
-                <span class="benefit-text">Modifications et annulations possibles selon conditions</span>
-              </li>
-              <li class="benefit-item">
-                <span class="benefit-label">Assistance :</span>
-                <span class="benefit-text">Service client disponible 24h/24 et 7j/7</span>
-              </li>
-              <li class="benefit-item">
-                <span class="benefit-label">Rapport qualité-prix :</span>
-                <span class="benefit-text">Tarifs compétitifs et offres promotionnelles régulières</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+     
 
     <!-- Booking Modal -->
     <div class="modal-overlay" *ngIf="selectedVehicle" (click)="closeModal()"></div>
@@ -270,7 +181,7 @@
                 <span class="icon" aria-hidden="true">🧳</span> {{selectedVehicle.luggage}} bagages
               </div>
               <div class="feature">
-                <span class="icon" aria-hidden="true">❄️</span> Climatisation: {{selectedVehicle.hasAC ? 'Oui' : 'Non'}}
+                <span class="icon" aria-hidden="true">🔥 </span> Climatisation: {{selectedVehicle.hasAC ? 'Oui' : 'Non'}}
               </div>
             </div>
           </div>
@@ -296,19 +207,19 @@
               <div class="options-list">
                 <div class="option-item">
                   <input type="checkbox" id="insurance" [(ngModel)]="bookingOptions.insurance">
-                  <label for="insurance">Assurance tous risques (+10€/jour)</label>
+                  <label for="insurance">Assurance tous risques (+10DT/jour)</label>
                 </div>
                 <div class="option-item">
                   <input type="checkbox" id="gps" [(ngModel)]="bookingOptions.gps">
-                  <label for="gps">GPS (+5€/jour)</label>
+                  <label for="gps">GPS (+5DT/jour)</label>
                 </div>
                 <div class="option-item">
                   <input type="checkbox" id="childSeat" [(ngModel)]="bookingOptions.childSeat">
-                  <label for="childSeat">Siège enfant (+7€/jour)</label>
+                  <label for="childSeat">Siège enfant (+7DT/jour)</label>
                 </div>
                 <div class="option-item">
                   <input type="checkbox" id="additionalDriver" [(ngModel)]="bookingOptions.additionalDriver">
-                  <label for="additionalDriver">Conducteur supplémentaire (+8€/jour)</label>
+                  <label for="additionalDriver">Conducteur supplémentaire (+8DT/jour)</label>
                 </div>
               </div>
             </div>
@@ -316,27 +227,27 @@
             <div class="booking-summary">
               <div class="summary-item">
                 <span class="item-label">Location du véhicule ({{calculateDays()}} jours)</span>
-                <span class="item-value">{{calculateTotalPrice(selectedVehicle)}} €</span>
+                <span class="item-value">{{calculateTotalPrice(selectedVehicle)}} DT</span>
               </div>
               <div *ngIf="bookingOptions.insurance" class="summary-item">
                 <span class="item-label">Assurance tous risques</span>
-                <span class="item-value">{{calculateOptionPrice(10)}} €</span>
+                <span class="item-value">{{calculateOptionPrice(10)}} DT</span>
               </div>
               <div *ngIf="bookingOptions.gps" class="summary-item">
                 <span class="item-label">GPS</span>
-                <span class="item-value">{{calculateOptionPrice(5)}} €</span>
+                <span class="item-value">{{calculateOptionPrice(5)}} DT</span>
               </div>
               <div *ngIf="bookingOptions.childSeat" class="summary-item">
                 <span class="item-label">Siège enfant</span>
-                <span class="item-value">{{calculateOptionPrice(7)}} €</span>
+                <span class="item-value">{{calculateOptionPrice(7)}} DT</span>
               </div>
               <div *ngIf="bookingOptions.additionalDriver" class="summary-item">
                 <span class="item-label">Conducteur supplémentaire</span>
-                <span class="item-value">{{calculateOptionPrice(8)}} €</span>
+                <span class="item-value">{{calculateOptionPrice(8)}} DT</span>
               </div>
               <div class="summary-total">
                 <span class="total-label">Total</span>
-                <span class="total-value">{{calculateFinalPrice()}} €</span>
+                <span class="total-value">{{calculateFinalPrice()}} DT</span>
               </div>
             </div>
           </div>
@@ -350,4 +261,3 @@
       </div>
     </div>
   </div>
-</div>

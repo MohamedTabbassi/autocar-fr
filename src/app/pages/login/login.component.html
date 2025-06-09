@@ -73,17 +73,34 @@
         </button>
       </div>
     </div>
- <!--
-  <div class="demo-login">
-      <p>Demo Accounts:</p>
-      <div class="demo-buttons">
-        <button (click)="loginAsDemo('Admin')" class="demo-button admin">Admin</button>
-        <button (click)="loginAsDemo('manager')" class="demo-button manager">Manager</button>
-        <button (click)="loginAsDemo('customer')" class="demo-button customer">Customer</button>
-      </div>
-    </div>  
  
- -->
+      <div class="demo-login">
+    <p>Demo Accounts:</p>
+    <div class="demo-buttons">
+      <!-- Bouton Admin démo -->
+      <button
+        type="button"
+        class="demo-button admin"
+        (click)="loginAsDemo(UserRole.ADMIN)"
+        [disabled]="loading"
+      >
+        Admin
+      </button>
+
+      <!-- Bouton Client démo -->
+      <button
+        type="button"
+        class="demo-button customer"
+        (click)="loginAsDemo(UserRole.CLIENT)"
+        [disabled]="loading"
+      >
+        Customer
+      </button>
+    </div>
+  </div> 
+ 
+ 
+ 
     
 
     <div class="register-link">

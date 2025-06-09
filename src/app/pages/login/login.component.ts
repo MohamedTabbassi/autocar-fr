@@ -14,12 +14,14 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+    public UserRole = UserRole;
   loginForm: FormGroup;
   loading = false;
   submitted = false;
   error = '';
   returnUrl: string;
 
+  
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -66,22 +68,20 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  loginAsDemo(role: UserRole): void {
+    loginAsDemo(role: UserRole): void {
     this.loading = true;
-    console.log('Demo login as:', role);
     this.authService.demoLogin(role).subscribe({
       next: () => {
-        console.log('Demo login success:', role);
+        // ② On redirige en fonction du rôle
         if (role === UserRole.ADMIN) {
           this.router.navigate(['/admin/dashboard']);
         } else {
           this.router.navigate([this.returnUrl]);
         }
       },
-      error: (error) => {
-        this.error = error.message;
+      error: (err) => {
+        this.error = err.message;
         this.loading = false;
-        console.error('Demo login error:', error);
       }
     });
   }

@@ -156,63 +156,102 @@
 
         <!-- Grid View -->
         <div *ngIf="viewMode === 'grid'" class="parts-grid">
-          <app-part-card
-            *ngFor="let part of filteredParts"
-            [part]="part"
-            (addToCart)="addToCart($event)"
-            (redirectToLogin)="redirectToLogin()"
-          ></app-part-card>
-        </div>
-
-        <!-- List View -->
-        <div *ngIf="viewMode === 'list'" class="parts-list">
-          <app-part-card
-            *ngFor="let part of filteredParts"
-            [part]="part"
-            (addToCart)="addToCart($event)"
-            (redirectToLogin)="redirectToLogin()"
-          ></app-part-card>
-        </div>
-
-        <!-- Related Categories -->
-        <div class="related-categories">
-          <h2 class="section-title">Catégories populaires</h2>
-          <div class="category-cards">
-            <div *ngFor="let category of partCategories.slice(0, 6)" class="category-card">
-              <div class="category-icon">
-                <img [src]="category.icon || 'assets/images/category-placeholder.png'" [alt]="category.name">
+          <div *ngFor="let part of filteredParts" class="part-card" [id]="'part-' + part.id">
+            <div class="part-image">
+              <img [src]="part.imageUrl || 'assets/images/part-placeholder.jpg'" [alt]="part.name">
+            </div>
+            <div class="part-content">
+              <h3 class="part-title">{{part.name}}</h3>
+              <p class="part-reference">Réf: {{part.reference}}</p>
+              <p class="part-description">{{part.description}}</p>
+              <p class="part-compatibility">Compatibilité: {{part.compatibility}}</p>
+              <div class="part-footer">
+                <div class="part-price">{{part.price.toFixed(2)}} €</div>
+                <div class="part-stock" [class.in-stock]="part.inStock" [class.out-of-stock]="!part.inStock">
+                  {{part.inStock ? 'En stock' : 'Rupture de stock'}}
+                </div>
               </div>
-              <h3 class="category-name">{{category.name}}</h3>
-              <a [routerLink]="['/auto-parts']" [queryParams]="{category: category.id}" class="category-link">
-                Voir les produits
-              </a>
+              <button 
+                class="btn btn-primary btn-full" 
+                [disabled]="!part.inStock" 
+                (click)="addToCart(part)"
+              >
+                Ajouter au panier
+              </button>
             </div>
           </div>
         </div>
 
-        <!-- Customer Support -->
-        <div class="customer-support">
-          <div class="support-item">
-            <div class="support-icon">🚚</div>
-            <h3 class="support-title">Livraison rapide</h3>
-            <p class="support-text">Livraison en 24-48h sur toute la Tunisie</p>
-          </div>
-          <div class="support-item">
-            <div class="support-icon">🔄</div>
-            <h3 class="support-title">Retours gratuits</h3>
-            <p class="support-text">14 jours pour changer d'avis</p>
-          </div>
-          <div class="support-item">
-            <div class="support-icon">🔒</div>
-            <h3 class="support-title">Paiement sécurisé</h3>
-            <p class="support-text">Paiement à la livraison ou en ligne</p>
-          </div>
-          <div class="support-item">
-            <div class="support-icon">📞</div>
-            <h3 class="support-title">Service client</h3>
-            <p class="support-text">Disponible 7j/7 de 8h à 20h</p>
+        <!-- List View -->
+        <div *ngIf="viewMode === 'list'" class="parts-list">
+          <div *ngFor="let part of filteredParts" class="part-list-item" [id]="'part-' + part.id">
+            <div class="part-list-image">
+              <img [src]="part.imageUrl || 'assets/images/part-placeholder.jpg'" [alt]="part.name">
+            </div>
+            <div class="part-list-details">
+              <h3 class="part-title">{{part.name}}</h3>
+              <p class="part-reference">Réf: {{part.reference}}</p>
+              <p class="part-description">{{part.description}}</p>
+              <p class="part-compatibility">Compatibilité: {{part.compatibility}}</p>
+              <p class="part-manufacturer">Fabricant: {{part.manufacturer}}</p>
+            </div>
+            <div class="part-list-actions">
+              <div class="part-price">{{part.price.toFixed(2)}} €</div>
+              <div class="part-stock" [class.in-stock]="part.inStock" [class.out-of-stock]="!part.inStock">
+                {{part.inStock ? 'En stock' : 'Rupture de stock'}}
+              </div>
+              <button 
+                class="btn btn-primary" 
+                [disabled]="!part.inStock" 
+                (click)="addToCart(part)"
+              >
+                Ajouter au panier
+              </button>
+            </div>
           </div>
         </div>
+
+  
+
+    <!-- Related Categories -->
+    <div class="related-categories">
+      <h2 class="section-title">Catégories populaires</h2>
+      <div class="category-cards">
+        <div *ngFor="let category of partCategories.slice(0, 6)" class="category-card">
+          <div class="category-icon">
+            <img [src]="category.icon || 'assets/images/category-placeholder.png'" [alt]="category.name">
+          </div>
+          <h3 class="category-name">{{category.name}}</h3>
+          <a [routerLink]="['/auto-parts']" [queryParams]="{category: category.id}" class="category-link">
+            Voir les produits
+          </a>
+        </div>
+      </div>
+    </div>
+
+   
+
+    <!-- Customer Support -->
+    <div class="customer-support">
+      <div class="support-item">
+        <div class="support-icon">🚚</div>
+        <h3 class="support-title">Livraison rapide</h3>
+        <p class="support-text">Livraison en 24-48h sur toute la Tunisie</p>
+      </div>
+      <div class="support-item">
+        <div class="support-icon">🔄</div>
+        <h3 class="support-title">Retours gratuits</h3>
+        <p class="support-text">14 jours pour changer d'avis</p>
+      </div>
+      <div class="support-item">
+        <div class="support-icon">🔒</div>
+        <h3 class="support-title">Paiement sécurisé</h3>
+        <p class="support-text">Paiement à la livraison ou en ligne</p>
+      </div>
+      <div class="support-item">
+        <div class="support-icon">📞</div>
+        <h3 class="support-title">Service client</h3>
+        <p class="support-text">Disponible 7j/7 de 8h à 20h</p>
       </div>
     </div>
   </div>

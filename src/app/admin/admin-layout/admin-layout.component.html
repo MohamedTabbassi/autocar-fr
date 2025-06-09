@@ -125,12 +125,14 @@
       </div>
     </header>
 
-    <!-- Content -->
-    <div class="admin-content">
+  <!-- Content -->
+  <div class="admin-content">
       *
     </div>
-  </main>
-</div>
+    <div class="admin-content">
+      <!-- C’est ici que les composants enfants vont s’afficher -->
+      <router-outlet></router-outlet>
+    </div>
 
 <!-- Mobile Sidebar Overlay -->
 <div class="sidebar-overlay" *ngIf="!isSidebarCollapsed && isMobile" (click)="toggleSidebar()"></div>

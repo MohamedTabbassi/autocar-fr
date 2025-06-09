@@ -1,6 +1,9 @@
 import { Routes } from "@angular/router";
-import { AuthService } from "./guards/auth-guard.service";
+import { AdminGuard } from "./guards/admin.service";
 import { UserProfileComponent } from "./pages/user-profile/user-profile.component";
+import { AuthService } from "./services/auth-service.service";
+
+
 
 export const routes: Routes = [
      { path: 'user-profile', component: UserProfileComponent },
@@ -43,51 +46,40 @@ export const routes: Routes = [
     path: "register",
     loadComponent: () => import("./pages/register/register.component").then((m) => m.RegisterComponent),
   },
+
+  
+  
   {
-    path: "admin",
-    canActivate: [AuthService],
-    loadComponent: () => import("./admin/admin-layout/admin-layout.component").then((m) => m.AdminLayoutComponent),
+    path: 'admin',
+    canActivate: [AdminGuard],
+    loadComponent: () =>
+      import('./admin/admin-layout/admin-layout.component').then(
+        m => m.AdminLayoutComponent
+      ),
     children: [
       {
-        path: "",
-        redirectTo: "dashboard",
-        pathMatch: "full"
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
       },
       {
-        path: "dashboard",
-        loadComponent: () => import("./admin/dasshboard/dasshboard.component").then((m) => m.DashboardComponent),
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./admin/dasshboard/dasshboard.component').then(
+            m => m.DashboardComponent
+          ),
       },
       {
-        path: "inventory",
-        loadComponent: () => import("./admin/inventory/inventory.component").then((m) => m.InventoryComponent),
+        path: 'inventory',
+        loadComponent: () =>
+          import('./admin/inventory/inventory.component').then(
+            m => m.InventoryComponent
+          ),
       },
-
-/*
-       
-      {
-        path: "bookings",
-        loadComponent: () => import("./admin/bookings/bookings.component").then((m) => m.BookingsComponent),
-      },
-      {
-        path: "users",
-        loadComponent: () => import("./admin/users/users.component").then((m) => m.UsersComponent),
-      },
-      {
-        path: "services",
-        loadComponent: () => import("./admin/services/services.component").then((m) => m.ServicesComponent),
-      },
-      {
-        path: "reports",
-        loadComponent: () => import("./admin/reports/reports.component").then((m) => m.ReportsComponent),
-      },
-      {
-        path: "settings",
-        loadComponent: () => import("./admin/settings/settings.component").then((m) => m.SettingsComponent),
-      } */
-    ]  
+    ]
   },
   {
-    path: "**",
-    redirectTo: "",
-  },
+    path: '**',
+    redirectTo: ''
+  }
 ];

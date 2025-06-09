@@ -6,6 +6,8 @@ import { AuthService } from "../../services/auth-service.service";
 import { CartService } from "../../services/cart.service.service";
 import { PartCardComponent } from "../../components/part-card/part-card.component"; 
 import { RouterLink } from "@angular/router";
+import { ProductService } from "../../services/product.service.service";
+import { Product } from "../../models/product.model.service";
 @Component({
   selector: "app-auto-parts",
   standalone: true,
@@ -562,7 +564,7 @@ export class AutoPartsComponent implements OnInit {
     }
   ];
 
-  constructor(private cartService: CartService, private authService: AuthService, private router: Router) {}
+  constructor(private cartService: CartService, private authService: AuthService, private router: Router,private productService: ProductService) {}
 
   ngOnInit(): void {
     this.loadParts();
@@ -689,29 +691,39 @@ export class AutoPartsComponent implements OnInit {
     return engine ? engine.name : "";
   }
 
-  addToCart(part: any): void {
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    this.loading = true;
-    this.cartService.addToCart(part.id.toString(), 1).subscribe({
-      next: (response) => {
-        if (response.success && response.data) {
-          this.cart = response.data.items;
-          this.cartCount = response.data.items.reduce((sum, item) => sum + item.quantity, 0);
-          alert(`${part.name} ajouté au panier !`);
-        }
-        this.loading = false;
-      },
-      error: (error) => {
-        this.error = error.message;
-        this.loading = false;
-        console.error('Error adding to cart:', error);
-      }
-    });
+ // src/app/pages/auto-parts/auto-parts.component.ts
+addToCart(part: Product): void {
+  if (!this.authService.isLoggedIn()) {
+    this.router.navigate(['/login']);
+    return;
   }
+
+  const productId = part.id;
+  // Vérif. format ObjectId
+  if (!/^[0-9a-fA-F]{24}$/.test(productId)) {
+    alert("Erreur : l'identifiant du produit est invalide.");
+    return;
+  }
+
+  this.loading = true;
+  this.cartService.addToCart(productId, 1).subscribe({
+    next: res => {
+      if (res.success && res.data) {
+        this.cartCount = res.data.items.reduce((sum: number, i: any) => sum + i.quantity, 0);
+        alert(`${part.name} ajouté au panier !`);
+      } else {
+        alert("Erreur lors de l'ajout au panier.");
+      }
+      this.loading = false;
+    },
+    error: err => {
+      console.error(err);
+      alert("Erreur : " + err.message);
+      this.loading = false;
+    }
+  });
+}
+
 
   redirectToLogin(): void {
     this.router.navigate(['/login']);

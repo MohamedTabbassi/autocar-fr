@@ -3,10 +3,10 @@ import  { Router } from "@angular/router"
 import  { AuthService } from "../../services/auth-service.service"
 import { User } from "../../models/user-model.service"
 import { CommonModule } from "@angular/common"
-
+import { RouterOutlet } from "@angular/router"
 @Component({
   selector: "app-admin-layout",
-  imports:[CommonModule],
+  imports:[CommonModule,RouterOutlet],
   templateUrl:"./admin-layout.component.html",
   styleUrls: ["./admin-layout.component.css"],
 })
